@@ -1,0 +1,36 @@
+{
+  "year": "2026",
+  "months": [
+    {"month": "January", "highlights": ["CES showcases AI-everywhere devices", "Google releases Gemini 3.0", "TypeScript 6.0 beta launched"], "narration": "January kicked off with CES 2026, where every device seemed to have an AI chip. Google released Gemini 3.0, and TypeScript 6.0 entered beta with decorator improvements."},
+    {"month": "February", "highlights": ["Apple Vision Pro 2 announced", "Kubernetes 1.32 GA", "Python 3.14 release candidate"], "narration": "February saw Apple announce Vision Pro 2 with a focus on developer tools. Kubernetes 1.32 went GA, and Python 3.14 hit release candidate status."},
+    {"month": "March", "highlights": ["Claude 4 released", "GitHub Copilot agents launched", "Rust 2.0 roadmap announced"], "narration": "March was massive. Anthropic dropped Claude 4 with its million-token context window. GitHub launched autonomous Copilot agents, and the Rust Foundation announced the 2.0 roadmap."},
+    {"month": "April", "highlights": ["Microsoft Build 2026 preview", "Docker acquires container security startup", "React 20 released"], "narration": "April brought early Build 2026 previews from Microsoft, a major Docker acquisition in the security space, and React 20 with server components as the default."},
+    {"month": "May", "highlights": ["Google I/O showcases Project Astra", "OpenAI releases GPT-5", "Deno 3.0 reaches stable"], "narration": "May was dominated by Google I/O and Project Astra. OpenAI countered with GPT-5, and Deno 3.0 reached stable with full Node compatibility."},
+    {"month": "June", "highlights": ["WWDC introduces AI-native Swift", "WebAssembly component model finalized", "Linux kernel 7.0 released"], "narration": "June's WWDC introduced AI-native features in Swift. The WebAssembly component model was finalized, and Linux kernel 7.0 shipped with major performance improvements."},
+    {"month": "July", "highlights": ["AWS re:Inforce security announcements", "Terraform 2.0 beta", "Open-source LLM beats GPT-4"], "narration": "July brought AWS security innovations at re:Inforce, Terraform 2.0 beta with a new state management engine, and an open-source LLM finally beating GPT-4 on benchmarks."},
+    {"month": "August", "highlights": ["GitHub Universe early preview", "PostgreSQL 18 released", "AI coding assistants hit 80% developer adoption"], "narration": "August saw GitHub Universe previews, PostgreSQL 18 with AI vector indexing built-in, and surveys showing 80 percent of developers now use AI coding assistants daily."},
+    {"month": "September", "highlights": ["iPhone 18 with on-device AI", "Kubernetes Ambient Mesh GA", "Bun 2.0 released"], "narration": "September's iPhone 18 featured powerful on-device AI. Kubernetes Ambient Mesh went GA, and Bun 2.0 was released with Node.js-breaking performance."},
+    {"month": "October", "highlights": ["KubeCon North America highlights", "OpenTelemetry profiling 1.0", "Anthropic releases Claude 4 Mini"], "narration": "October's KubeCon showcased platform engineering maturity. OpenTelemetry profiling hit 1.0, and Anthropic released a smaller, faster Claude 4 Mini."},
+    {"month": "November", "highlights": ["AWS re:Invent 2026", "AI agent frameworks consolidate", "WebGPU reaches broad browser support"], "narration": "November was dominated by re:Invent 2026 with serverless AI inference. The AI agent framework landscape consolidated around three major players, and WebGPU reached all major browsers."},
+    {"month": "December", "highlights": ["Year-end developer survey results", "Open-source AI models rival proprietary", "Supply chain security becomes standard"], "narration": "December wrapped up with developer surveys confirming the AI transformation. Open-source models closed the gap with proprietary ones, and software supply chain security became a standard practice."}
+  ],
+  "top_technologies": [
+    "AI Coding Assistants (Copilot, Cursor, Cody)",
+    "Large Language Models (Claude 4, GPT-5, Gemini 3)",
+    "Kubernetes & Platform Engineering",
+    "WebAssembly (WASM)",
+    "Rust Programming Language",
+    "OpenTelemetry Observability Stack",
+    "AI Agents & Autonomous Systems",
+    "Edge Computing & On-Device AI",
+    "Infrastructure as Code 2.0",
+    "Software Supply Chain Security"
+  ],
+  "predictions": [
+    "AI agents will handle 30% of routine coding tasks autonomously",
+    "WebAssembly will become the default for serverless edge functions",
+    "Kubernetes complexity will be fully abstracted by platform engineering tools",
+    "Open-source LLMs will match proprietary models for most tasks",
+    "Developer productivity will increase 2x with AI-augmented workflows"
+  ]
+}

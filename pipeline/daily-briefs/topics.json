@@ -1,0 +1,95 @@
+{
+  "topics": [
+    {
+      "id": "dotnet",
+      "name": ".NET Daily",
+      "description": "Daily .NET and C# news",
+      "rss_feeds": [
+        "https://devblogs.microsoft.com/dotnet/feed/",
+        "https://www.hanselman.com/blog/feed/rss",
+        "https://andrewlock.net/rss.xml"
+      ],
+      "keywords": ["dotnet", "csharp", "aspnet", "blazor", "maui", "ef core", "nuget"],
+      "schedule": "daily",
+      "intro": "Welcome to .NET Daily — your daily dose of .NET news and updates.",
+      "outro": "That's your .NET Daily. Subscribe for tomorrow's update. Full courses at tdsquad.gumroad.com"
+    },
+    {
+      "id": "ai",
+      "name": "AI Daily",
+      "description": "Daily AI and ML news",
+      "rss_feeds": [
+        "https://openai.com/blog/rss.xml",
+        "https://blog.google/technology/ai/rss/",
+        "https://huggingface.co/blog/feed.xml"
+      ],
+      "keywords": ["ai", "llm", "gpt", "claude", "machine learning", "deep learning", "neural", "transformer", "rag", "agent"],
+      "schedule": "daily",
+      "intro": "Welcome to AI Daily — the latest in artificial intelligence and machine learning.",
+      "outro": "That's AI Daily. Hit subscribe for tomorrow's brief. Learn AI development at tdsquad.gumroad.com"
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud Daily",
+      "description": "Daily cloud and DevOps news",
+      "rss_feeds": [
+        "https://azure.microsoft.com/en-us/blog/feed/",
+        "https://aws.amazon.com/blogs/aws/feed/",
+        "https://cloud.google.com/blog/rss"
+      ],
+      "keywords": ["kubernetes", "docker", "azure", "aws", "gcp", "terraform", "devops", "cloud native", "serverless"],
+      "schedule": "daily",
+      "intro": "Welcome to Cloud Daily — your daily cloud and DevOps update.",
+      "outro": "That's Cloud Daily. Subscribe for daily updates. K8s course at tdsquad.gumroad.com"
+    },
+    {
+      "id": "dev",
+      "name": "Dev Daily",
+      "description": "General developer news across all stacks",
+      "rss_feeds": [
+        "https://dev.to/feed",
+        "https://hnrss.org/frontpage",
+        "https://www.infoq.com/feed/"
+      ],
+      "keywords": ["programming", "developer", "software", "open source", "github", "web", "api", "javascript", "typescript", "python", "rust", "go"],
+      "schedule": "daily",
+      "intro": "Welcome to Dev Daily — top developer news from across the stack.",
+      "outro": "That's Dev Daily. Subscribe and never miss an update."
+    },
+    {
+      "id": "security",
+      "name": "Security Brief",
+      "description": "Cybersecurity and AppSec news",
+      "rss_feeds": [
+        "https://krebsonsecurity.com/feed/",
+        "https://thehackernews.com/feeds/posts/default?alt=rss"
+      ],
+      "keywords": ["security", "vulnerability", "CVE", "zero-day", "breach", "ransomware", "authentication", "encryption"],
+      "schedule": "weekly",
+      "intro": "Welcome to the Security Brief — this week's cybersecurity news.",
+      "outro": "That's your Security Brief. Stay safe, stay subscribed."
+    },
+    {
+      "id": "gamedev",
+      "name": "GameDev Weekly",
+      "description": "Game development news and tools",
+      "rss_feeds": [
+        "https://www.gamedeveloper.com/rss.xml"
+      ],
+      "keywords": ["game dev", "unity", "unreal", "godot", "html5 games", "indie", "game engine"],
+      "schedule": "weekly",
+      "intro": "Welcome to GameDev Weekly — news from the game development world.",
+      "outro": "That's GameDev Weekly. Try our games at jellyboltgames.itch.io"
+    }
+  ],
+  "weekly_summary": {
+    "name": "TechAI Weekly Roundup",
+    "schedule": "sunday",
+    "description": "Combines top stories from all daily topics into one weekly video"
+  },
+  "yearly_recap": {
+    "name": "Tech Year in Review",
+    "schedule": "december",
+    "description": "Annual technology recap — biggest stories, trends, predictions"
+  }
+}

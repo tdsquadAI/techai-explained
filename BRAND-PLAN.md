@@ -1,0 +1,99 @@
+# TechAI Explained — Brand Plan
+
+## Mission
+
+Deliver daily, actionable tech insights to developers and tech enthusiasts — in English and Hebrew — through automated video briefs, written content, and community engagement.
+
+## Revenue Streams
+
+| Stream           | Platform         | Status           | Notes                              |
+|-----------------|------------------|------------------|------------------------------------|
+| Digital Products | Gumroad          | ✅ Active         | Store: tdsquad.gumroad.com         |
+| Ad Revenue       | Google AdSense   | ⏳ Pending signup | Needs publisher ID                 |
+| Affiliates       | Multiple         | ⏳ Pending signup | DigitalOcean, AWS, Cloudflare, JetBrains |
+| Tips/Donations   | BuyMeACoffee     | ⏳ Pending setup  | buymeacoffee.com/jellyboltgames    |
+| Courses          | Gumroad/Udemy    | 📋 Planned        | Tech tutorial courses              |
+| Newsletter       | Substack         | 📋 Planned        | Weekly Hebrew tech digest          |
+
+## Distribution Channels
+
+| Channel       | Purpose                      | Frequency      | Status         |
+|---------------|------------------------------|----------------|----------------|
+| YouTube       | Daily tech briefs (video)    | Daily          | ⏳ API pending |
+| Medium        | Long-form articles           | 2-3x/week      | 📋 Planned     |
+| Dev.to        | Cross-posted articles        | 2-3x/week      | 📋 Planned     |
+| Hashnode      | Cross-posted articles        | 2-3x/week      | 📋 Planned     |
+| Substack      | Hebrew newsletter            | Weekly          | 📋 Planned     |
+| Reddit        | Community engagement         | 2-3x/week      | 📋 Planned     |
+| Twitter/X     | Short updates, threads       | Daily           | 📋 Planned     |
+| LinkedIn      | Professional content         | 2-3x/week      | 📋 Planned     |
+
+## Automation
+
+### Daily Briefs Pipeline (GitHub Actions)
+
+- **Schedule:** 06:00 UTC daily
+- **Topics:** .NET, AI, Cloud, Dev (daily) + Security, GameDev (Sundays)
+- **Languages:** English + Hebrew
+- **Output:** Video briefs with TTS narration
+- **Storage:** GitHub artifacts (30-day retention)
+
+### Content Calendar (GitHub Actions)
+
+- **Schedule:** Every Monday at 07:00 UTC
+- **Creates:** Weekly content plan issue + 7 daily tracking issues
+- **Labels:** `content-calendar`, `daily-brief`, `automation`
+
+### Future Automation
+
+- YouTube auto-upload (when API keys configured)
+- Medium cross-posting via API
+- Social media scheduled posting
+- Newsletter auto-generation from top briefs
+
+## Hebrew Content Strategy
+
+- Translate top-performing English briefs to Hebrew
+- Hebrew-specific RSS sources in `topics_he.json`
+- Noto fonts for Hebrew text rendering in videos
+- Target: Hebrew tech newsletter on Substack
+
+## Cross-Brand Promotion
+
+| From              | To                | Method                           |
+|-------------------|-------------------|----------------------------------|
+| TechAI Explained  | JellyBolt Games   | GameDev briefs mention games     |
+| TechAI Explained  | Content Empire    | Syndicate articles               |
+| JellyBolt Games   | TechAI Explained  | Game dev tutorials               |
+| Content Empire    | TechAI Explained  | Feature tech content             |
+
+## Content Calendar
+
+### Daily
+- 4 tech brief videos (EN): .NET, AI, Cloud, Dev
+- 1+ social media post
+
+### Weekly
+- Sunday: Security + GameDev briefs
+- Monday: Content plan created (auto)
+- Midweek: 1 long-form article
+- Friday: Weekly summary video
+
+### Monthly
+- Review analytics and top-performing content
+- Adjust topic weights based on engagement
+- Update affiliate links and promotions
+
+### Quarterly
+- Launch or update a digital product on Gumroad
+- Evaluate new revenue streams
+- Review and refresh content strategy
+
+## Key Metrics to Track
+
+- Daily brief views (YouTube)
+- Article reads (Medium, Dev.to)
+- Gumroad revenue
+- Affiliate conversions
+- Newsletter subscribers
+- Social media followers

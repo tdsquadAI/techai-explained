@@ -1,0 +1,36 @@
+{
+  "affiliates": {
+    "digitalocean": {
+      "referral_url": "https://m.do.co/c/PLACEHOLDER",
+      "description": "DigitalOcean $200 credit referral",
+      "status": "pending_signup"
+    },
+    "aws": {
+      "program": "AWS Affiliate Program",
+      "signup_url": "https://affiliate-program.amazon.com/",
+      "status": "pending_signup"
+    },
+    "cloudflare": {
+      "referral_url": "https://dash.cloudflare.com/sign-up?ref=PLACEHOLDER",
+      "status": "pending_signup"
+    },
+    "jetbrains": {
+      "program": "JetBrains Affiliate Program",
+      "signup_url": "https://www.jetbrains.com/company/partners/affiliate/",
+      "status": "pending_signup"
+    },
+    "gumroad": {
+      "store_url": "https://tdsquad.gumroad.com",
+      "products": ["jnmqpd", "nnefv", "qtmyl"],
+      "status": "active"
+    }
+  },
+  "adsense": {
+    "publisher_id": "ca-pub-PLACEHOLDER",
+    "status": "pending_signup"
+  },
+  "buymeacoffee": {
+    "url": "https://buymeacoffee.com/jellyboltgames",
+    "status": "pending_setup"
+  }
+}

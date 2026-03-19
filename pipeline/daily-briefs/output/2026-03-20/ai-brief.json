@@ -1,0 +1,34 @@
+{
+  "topic_id": "ai",
+  "topic_name": "AI Daily",
+  "date": "2026-03-20",
+  "intro": "Welcome to AI Daily \u00e2\u20ac\u201d the latest in artificial intelligence and machine learning.",
+  "outro": "That's AI Daily. Hit subscribe for tomorrow's brief. Learn AI development at tdsquad.gumroad.com",
+  "items": [
+    {
+      "headline": "Designing AI agents to resist prompt injection",
+      "summary": "How ChatGPT defends against prompt injection and social engineering by constraining risky actions and protecting sensitive data in agent workflows.",
+      "source_url": "https://openai.com/index/designing-agents-to-resist-prompt-injection"
+    },
+    {
+      "headline": "How Balyasny Asset Management built an AI research engine for investing",
+      "summary": "See how Balyasny built an AI research system with GPT-5.4, rigorous model evaluation, and agent workflows to transform investment analysis at scale.",
+      "source_url": "https://openai.com/index/balyasny-asset-management"
+    },
+    {
+      "headline": "How we monitor internal coding agents for misalignment",
+      "summary": "How OpenAI uses chain-of-thought monitoring to study misalignment in internal coding agents\u2014analyzing real-world deployments to detect risks and strengthen AI safety safeguards.",
+      "source_url": "https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment"
+    },
+    {
+      "headline": "Introducing GPT-5.4 mini and nano",
+      "summary": "GPT-5.4 mini and nano are smaller, faster versions of GPT-5.4 optimized for coding, tool use, multimodal reasoning, and high-volume API and sub-agent workloads.",
+      "source_url": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano"
+    },
+    {
+      "headline": "Equipping workers with insights about compensation",
+      "summary": "New research shows Americans send nearly 3 million daily messages to ChatGPT asking about compensation and earnings, helping close the wage information gap.",
+      "source_url": "https://openai.com/index/equipping-workers-with-insights-about-compensation"
+    }
+  ]
+}

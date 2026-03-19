@@ -1,0 +1,34 @@
+{
+  "topic_id": "dotnet",
+  "topic_name": ".NET Daily",
+  "date": "2026-03-20",
+  "intro": "Welcome to .NET Daily \u00e2\u20ac\u201d your daily dose of .NET news and updates.",
+  "outro": "That's your .NET Daily. Subscribe for tomorrow's update. Full courses at tdsquad.gumroad.com",
+  "items": [
+    {
+      "headline": ".NET 11 Preview 2 is now available!",
+      "summary": "Find out about the new features in .NET 11 Preview 2 across the .NET runtime, SDK, libraries, ASP.NET Core, Blazor, C#, .NET MAUI, and more!\nThe post .NET 11 Preview 2 is now available! appeared first",
+      "source_url": "https://devblogs.microsoft.com/dotnet/dotnet-11-preview-2/"
+    },
+    {
+      "headline": "Accelerating .NET MAUI Development with AI Agents",
+      "summary": "Learn how custom-built AI agents are dramatically improving the .NET MAUI contribution workflow, reducing issue resolution time by 50-70% while increasing test coverage and code quality.\nThe post Acce",
+      "source_url": "https://devblogs.microsoft.com/dotnet/accelerating-dotnet-maui-with-ai-agents/"
+    },
+    {
+      "headline": "RT.Assistant: A Multi-Agent Voice Bot Using .NET and OpenAI",
+      "summary": "Guest blog post on building a real time assistant using OpenAI Realtime API using .NET, F#, Microsoft.Extensions.AI and .NET MAUI.\nThe post RT.Assistant: A Multi-Agent Voice Bot Using .NET and OpenAI ",
+      "source_url": "https://devblogs.microsoft.com/dotnet/rt-assistant-a-realtime-multiagent-voice-bot-using-dotnet-and-open-ai-api/"
+    },
+    {
+      "headline": "Modernize .NET Anywhere with GitHub Copilot",
+      "summary": "See how the modernize-dotnet agent helps you assess apps, create upgrade plans, and modernize .NET projects from Visual Studio, VS Code, GitHub Copilot CLI, and GitHub.\nThe post Modernize .NET Anywher",
+      "source_url": "https://devblogs.microsoft.com/dotnet/modernize-dotnet-anywhere-with-ghcp/"
+    },
+    {
+      "headline": "Extend your coding agent with .NET Skills",
+      "summary": "Introducing the dotnet/skills repository and how .NET agent skills can improve coding agent workflows.\nThe post Extend your coding agent with .NET Skills appeared first on .NET Blog.",
+      "source_url": "https://devblogs.microsoft.com/dotnet/extend-your-coding-agent-with-dotnet-skills/"
+    }
+  ]
+}

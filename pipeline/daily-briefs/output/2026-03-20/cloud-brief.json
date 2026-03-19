@@ -1,0 +1,34 @@
+{
+  "topic_id": "cloud",
+  "topic_name": "Cloud Daily",
+  "date": "2026-03-20",
+  "intro": "Welcome to Cloud Daily \u00e2\u20ac\u201d your daily cloud and DevOps update.",
+  "outro": "That's Cloud Daily. Subscribe for daily updates. K8s course at tdsquad.gumroad.com",
+  "items": [
+    {
+      "headline": "Microsoft at NVIDIA GTC: New solutions for Microsoft Foundry, Azure AI infrastructure and Physical AI",
+      "summary": "Microsoft combines accelerated computing with cloud scale engineering to bring advanced AI capabilities to our customers. For years, we\u2019ve worked with NVIDIA to integrate hardware, software and infras",
+      "source_url": "https://blogs.microsoft.com/blog/2026/03/16/microsoft-at-nvidia-gtc-new-solutions-for-microsoft-foundry-azure-ai-infrastructure-and-physical-ai/"
+    },
+    {
+      "headline": "From legacy to leadership: How PostgreSQL on Azure powers enterprise agility and innovation",
+      "summary": "Our mission is to make PostgreSQL the most performant, scalable, and enterprise-ready open database platform available. With Azure Database for PostgreSQL and the newly introduced Azure HorizonDB, we\u2019",
+      "source_url": "https://azure.microsoft.com/en-us/blog/from-legacy-to-leadership-how-postgresql-on-azure-powers-enterprise-agility-and-innovation/"
+    },
+    {
+      "headline": "Modernizing regulated industries with cloud and agentic AI",
+      "summary": "Discover how cloud modernization and agentic AI are accelerating migration across healthcare, financial services, and manufacturing.\nThe post Modernizing regulated industries with cloud and agentic AI",
+      "source_url": "https://www.microsoft.com/en-us/industry/blog/general/2026/03/11/modernizing-regulated-industries-with-cloud-and-agentic-ai/"
+    },
+    {
+      "headline": "Many agents, one team: Scaling modernization on Azure",
+      "summary": "We\u2019re announcing the first agentic end-to-end modernization solution that brings IT and developers into a single, connected workflow.\nThe post Many agents, one team: Scaling modernization on Azure app",
+      "source_url": "https://azure.microsoft.com/en-us/blog/many-agents-one-team-scaling-modernization-on-azure/"
+    },
+    {
+      "headline": "Introducing Fireworks AI on Microsoft Foundry: Bringing high performance, low latency open model inference to Azure",
+      "summary": "We\u2019re announcing the public preview of Fireworks AI on Microsoft Foundry, bringing high\u2011performance open model inference into Azure. This integration reflects Microsoft Foundry\u2019s broader direction: pr",
+      "source_url": "https://azure.microsoft.com/en-us/blog/introducing-fireworks-ai-on-microsoft-foundry-bringing-high-performance-low-latency-open-model-inference-to-azure/"
+    }
+  ]
+}

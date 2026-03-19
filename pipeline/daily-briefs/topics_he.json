@@ -1,0 +1,70 @@
+{
+  "topics": [
+    {
+      "id": "dotnet-he",
+      "name": "דוט-נט יומי",
+      "description": "חדשות יומיות על דוט-נט ו-C#",
+      "keywords": ["dotnet", "csharp", "aspnet", "blazor"],
+      "schedule": "daily",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים לדוט-נט יומי — המנה היומית שלכם של חדשות דוט-נט.",
+      "outro": "זה הדוט-נט יומי שלכם. הירשמו לערוץ לעדכון של מחר. קורסים מלאים ב-tdsquad.gumroad.com"
+    },
+    {
+      "id": "ai-he",
+      "name": "AI יומי",
+      "description": "חדשות יומיות בתחום הבינה המלאכותית",
+      "keywords": ["ai", "llm", "gpt", "claude", "machine learning"],
+      "schedule": "daily",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים ל-AI יומי — העדכונים האחרונים בבינה מלאכותית ולמידת מכונה.",
+      "outro": "זה ה-AI יומי. הירשמו לערוץ. למדו פיתוח AI ב-tdsquad.gumroad.com"
+    },
+    {
+      "id": "cloud-he",
+      "name": "ענן יומי",
+      "description": "חדשות יומיות על ענן ו-DevOps",
+      "keywords": ["kubernetes", "docker", "azure", "aws", "devops"],
+      "schedule": "daily",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים לענן יומי — העדכון היומי שלכם בענן ו-DevOps.",
+      "outro": "זה הענן יומי. הירשמו לעדכונים. קורס K8s ב-tdsquad.gumroad.com"
+    },
+    {
+      "id": "dev-he",
+      "name": "מפתחים יומי",
+      "description": "חדשות כלליות למפתחים",
+      "keywords": ["programming", "developer", "software", "open source"],
+      "schedule": "daily",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים למפתחים יומי — חדשות טכנולוגיה מובילות מכל הסטאקים.",
+      "outro": "זה המפתחים יומי. הירשמו ולא תפספסו עדכון."
+    },
+    {
+      "id": "security-he",
+      "name": "סייבר שבועי",
+      "description": "חדשות אבטחת מידע שבועיות",
+      "keywords": ["security", "vulnerability", "CVE", "breach"],
+      "schedule": "weekly",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים לסייבר שבועי — חדשות אבטחת הסייבר של השבוע.",
+      "outro": "זה הסייבר השבועי שלכם. הישארו בטוחים, הישארו מנויים."
+    },
+    {
+      "id": "gamedev-he",
+      "name": "פיתוח משחקים שבועי",
+      "description": "חדשות ותחומים בפיתוח משחקים",
+      "keywords": ["game dev", "unity", "godot", "indie"],
+      "schedule": "weekly",
+      "language": "he",
+      "voice": "he-IL-AvriNeural",
+      "intro": "ברוכים הבאים לפיתוח משחקים שבועי — חדשות מעולם פיתוח המשחקים.",
+      "outro": "זה פיתוח משחקים שבועי. נסו את המשחקים שלנו ב-jellyboltgames.itch.io"
+    }
+  ]
+}

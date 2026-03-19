@@ -1,0 +1,34 @@
+{
+  "topic_id": "dev",
+  "topic_name": "Dev Daily",
+  "date": "2026-03-20",
+  "intro": "Welcome to Dev Daily \u00e2\u20ac\u201d top developer news from across the stack.",
+  "outro": "That's Dev Daily. Subscribe and never miss an update.",
+  "items": [
+    {
+      "headline": "A Home Weather Monitoring System Built Without AI",
+      "summary": "Coding without using AI may seem revolutionary nowadays but what I wanted was simply to learn Python and enjoy the act of coding with my own hands.\n\nSo I built a Home Weather Monitoring System with th",
+      "source_url": "https://dev.to/nandofm/a-home-weather-monitoring-system-built-without-ai-4a29"
+    },
+    {
+      "headline": "Rentilot: A Practical Alternative to Rentila for Property Management",
+      "summary": "If you're a landlord or a developer building tools for landlords, you've probably seen the same pattern: most property management apps are good at administrative storage but weaker on decision support",
+      "source_url": "https://dev.to/brunoantunes/rentilot-a-practical-alternative-to-rentila-for-property-management-nge"
+    },
+    {
+      "headline": "A Short History of Agent-Based Models \u2014 and Why Software Engineers Should Care",
+      "summary": "In the 1940s, John von Neumann proved that a cellular automaton could replicate itself. His design required 29 possible states per cell and a pattern of roughly 200,000 cells. It was mathematically ri",
+      "source_url": "https://dev.to/vibehackers/a-short-history-of-agent-based-models-and-why-software-engineers-should-care-1cmd"
+    },
+    {
+      "headline": "Cockpit is a web-based graphical interface for servers",
+      "summary": "Article URL: https://github.com/cockpit-project/cockpit\nComments URL: https://news.ycombinator.com/item?id=47445599\nPoints: 93\n# Comments: 52",
+      "source_url": "https://github.com/cockpit-project/cockpit"
+    },
+    {
+      "headline": "Google details new 24-hour process to sideload unverified Android apps",
+      "summary": "https://android-developers.googleblog.com/2026/03/android-de...\n\nComments URL: https://news.ycombinator.com/item?id=47442690\nPoints: 369\n# Comments: 388",
+      "source_url": "https://arstechnica.com/gadgets/2026/03/google-details-new-24-hour-process-to-sideload-unverified-android-apps/"
+    }
+  ]
+}

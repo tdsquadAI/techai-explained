@@ -1,0 +1,50 @@
+{
+  "week_of": "March 17, 2026",
+  "stories": [
+    {
+      "headline": "Claude 4 Changes the AI Landscape",
+      "bullets": ["1 million token context window", "State-of-the-art reasoning benchmarks", "Available via API and consumer app"],
+      "narration": "Anthropic released Claude 4 this week, featuring a massive one-million token context window and significantly improved reasoning capabilities. This is a game changer for developers building AI-powered applications."
+    },
+    {
+      "headline": "Kubernetes 1.33 Goes GA",
+      "bullets": ["Sidecar containers are now stable", "Gateway API reaches v1.2", "Improved pod scheduling"],
+      "narration": "Kubernetes 1.33 reached general availability with sidecar containers finally marked stable after years of beta. The Gateway API also received major improvements."
+    },
+    {
+      "headline": "GitHub Copilot Gets Autonomous Agents",
+      "bullets": ["Can resolve issues independently", "Multi-file code changes", "Runs in sandboxed environments"],
+      "narration": "GitHub Copilot now includes autonomous agents that can tackle entire issues without human guidance. They create branches, make multi-file changes, and submit pull requests."
+    },
+    {
+      "headline": "Rust Foundation Announces Rust 2.0 Roadmap",
+      "bullets": ["Backward compatible", "Async improvements", "Better error messages"],
+      "narration": "The Rust Foundation outlined the roadmap for Rust 2.0, emphasizing full backward compatibility while introducing major async programming improvements."
+    },
+    {
+      "headline": "OpenTelemetry Reaches 1.0 for Profiling",
+      "bullets": ["Continuous profiling standard", "CPU and memory profiling", "Works with Grafana and Datadog"],
+      "narration": "OpenTelemetry's profiling signal reached 1.0 this week, completing the trio of traces, metrics, and profiles for full-stack observability."
+    }
+  ],
+  "deep_dive": {
+    "title": "Claude 4: What Developers Need to Know",
+    "sections": [
+      {
+        "title": "The Context Window Revolution",
+        "bullets": ["1M tokens means entire codebases fit in context", "No more chunking for most use cases", "RAG may become optional for smaller datasets"],
+        "narration": "The most significant feature of Claude 4 is its one-million token context window. This means you can feed entire codebases, documentation sets, or databases directly into the model without chunking or retrieval pipelines."
+      },
+      {
+        "title": "Reasoning Improvements",
+        "bullets": ["Chain-of-thought is now built-in", "Multi-step planning without prompting", "Better at math and logic puzzles"],
+        "narration": "Claude 4's reasoning capabilities represent a step function improvement. The model now performs chain-of-thought reasoning internally without explicit prompting, leading to better results on complex tasks."
+      },
+      {
+        "title": "What This Means for Developers",
+        "bullets": ["Simpler architectures for AI apps", "Less infrastructure needed", "Focus shifts to evaluation and guardrails"],
+        "narration": "For developers, Claude 4 simplifies AI application architecture. Many RAG pipelines can be replaced with direct context injection. The focus shifts from retrieval engineering to evaluation and safety guardrails."
+      }
+    ]
+  }
+}

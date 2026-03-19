@@ -1,0 +1,104 @@
+name: Content Calendar
+
+on:
+  schedule:
+    # Run every Monday at 7:00 AM UTC
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+jobs:
+  create-weekly-plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Calculate week dates
+        id: dates
+        run: |
+          WEEK_START=$(date -d "next Monday" +%Y-%m-%d 2>/dev/null || date -v+1d +%Y-%m-%d)
+          WEEK_END=$(date -d "next Sunday" +%Y-%m-%d 2>/dev/null || date -v+7d +%Y-%m-%d)
+          WEEK_NUM=$(date +%V)
+          YEAR=$(date +%Y)
+          echo "week_start=$WEEK_START" >> $GITHUB_OUTPUT
+          echo "week_end=$WEEK_END" >> $GITHUB_OUTPUT
+          echo "week_num=$WEEK_NUM" >> $GITHUB_OUTPUT
+          echo "year=$YEAR" >> $GITHUB_OUTPUT
+
+      - name: Create weekly content issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const weekNum = '${{ steps.dates.outputs.week_num }}';
+            const year = '${{ steps.dates.outputs.year }}';
+            const weekStart = '${{ steps.dates.outputs.week_start }}';
+            const weekEnd = '${{ steps.dates.outputs.week_end }}';
+
+            const body = `## 📅 Content Plan — Week ${weekNum}, ${year}
+            **Period:** ${weekStart} → ${weekEnd}
+
+            ### Daily Briefs (Auto-generated)
+            - [ ] Monday: .NET, AI, Cloud, Dev
+            - [ ] Tuesday: .NET, AI, Cloud, Dev
+            - [ ] Wednesday: .NET, AI, Cloud, Dev
+            - [ ] Thursday: .NET, AI, Cloud, Dev
+            - [ ] Friday: .NET, AI, Cloud, Dev
+            - [ ] Saturday: .NET, AI, Cloud, Dev
+            - [ ] Sunday: .NET, AI, Cloud, Dev + Security, GameDev
+
+            ### Hebrew Content
+            - [ ] Translate top-performing brief to Hebrew
+            - [ ] Hebrew tech newsletter draft
+
+            ### Long-form Content
+            - [ ] Blog post topic: _TBD_
+            - [ ] Medium article: _TBD_
+            - [ ] Dev.to cross-post: _TBD_
+
+            ### Social Media
+            - [ ] Twitter/X thread (at least 2)
+            - [ ] Reddit post (relevant subreddit)
+            - [ ] LinkedIn post
+
+            ### Revenue Tasks
+            - [ ] Review Gumroad sales
+            - [ ] Check affiliate dashboard
+            - [ ] Update any expiring promotions
+
+            ### Cross-Brand
+            - [ ] JellyBolt Games update (if applicable)
+            - [ ] Content Empire syndication check
+
+            ---
+            _Auto-created by Content Calendar workflow_`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📅 Week ${weekNum} Content Plan (${weekStart} → ${weekEnd})`,
+              body: body,
+              labels: ['content-calendar', 'automation']
+            });
+
+      - name: Create daily brief tracking issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const weekStart = new Date('${{ steps.dates.outputs.week_start }}');
+
+            for (let i = 0; i < 7; i++) {
+              const date = new Date(weekStart);
+              date.setDate(date.getDate() + i);
+              const dateStr = date.toISOString().split('T')[0];
+              const day = days[i];
+              const extraTopics = i === 6 ? ', Security, GameDev' : '';
+
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `📰 Daily Brief — ${day} ${dateStr}`,
+                body: `## Daily Brief for ${day}, ${dateStr}\n\n### Topics\n- [ ] .NET\n- [ ] AI\n- [ ] Cloud\n- [ ] Dev${extraTopics}\n\n### Checklist\n- [ ] Briefs generated\n- [ ] Videos created\n- [ ] Uploaded to YouTube\n- [ ] Shared on social media\n\n---\n_Auto-created by Content Calendar workflow_`,
+                labels: ['daily-brief', 'automation']
+              });
+            }

@@ -1,0 +1,26 @@
+{
+  "date": "2026-03-19",
+  "items": [
+    {
+      "headline": "Claude 4 Released",
+      "bullets": [
+        "Massive context window",
+        "Better reasoning"
+      ]
+    },
+    {
+      "headline": "Kubernetes 1.33 GA",
+      "bullets": [
+        "Sidecar containers stable",
+        "Gateway API improvements"
+      ]
+    },
+    {
+      "headline": "GitHub Copilot Agents",
+      "bullets": [
+        "Autonomous issue resolution",
+        "Multi-file editing"
+      ]
+    }
+  ]
+}
