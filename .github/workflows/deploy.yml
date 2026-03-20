@@ -1,10 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Push trigger disabled - GitHub Pages not enabled for this repo.
-  # Re-enable when migrating to Netlify/Vercel or re-enabling Pages.
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
