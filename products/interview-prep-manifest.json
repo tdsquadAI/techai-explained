@@ -1,0 +1,446 @@
+{
+  "product": {
+    "id": "hebrew-interview-prep",
+    "name_hebrew": "מדריך הכנה לראיונות טכניים - הסדרה המלאה",
+    "name_english": "Technical Interview Prep - Complete Hebrew Series",
+    "brand": "TechAI Explained",
+    "version": "1.0",
+    "release_date": "2026-03-20",
+    "price": 29.99,
+    "currency": "USD",
+    "lifetime_access": true
+  },
+  "content_summary": {
+    "total_files": 50,
+    "total_episodes": 34,
+    "total_questions": 165,
+    "total_tips": 30,
+    "total_size_bytes": 521245,
+    "tracks": 4
+  },
+  "tracks": [
+    {
+      "name": "C# & .NET",
+      "episodes": 10,
+      "duration_minutes": 180,
+      "questions": 50,
+      "files": [
+        "csharp/course-outline.md",
+        "csharp/questions-bank.md",
+        "csharp/episodes/episode-01-basics.md",
+        "csharp/episodes/episode-02-collections-linq.md",
+        "csharp/episodes/episode-03-async-await.md",
+        "csharp/episodes/episode-04-memory.md",
+        "csharp/episodes/episode-05-design-patterns.md",
+        "csharp/episodes/episode-06-entity-framework.md",
+        "csharp/episodes/episode-07-aspnet-core.md",
+        "csharp/episodes/episode-08-threading.md",
+        "csharp/episodes/episode-09-live-coding.md",
+        "csharp/episodes/episode-10-mock.md"
+      ]
+    },
+    {
+      "name": "Algorithms",
+      "episodes": 10,
+      "duration_minutes": 210,
+      "questions": 75,
+      "files": [
+        "algorithms/course-outline.md",
+        "algorithms/questions-bank.md",
+        "algorithms/episodes/episode-01-arrays.md",
+        "algorithms/episodes/episode-02-hashmaps.md",
+        "algorithms/episodes/episode-03-linkedlists.md",
+        "algorithms/episodes/episode-04-stacks-queues.md",
+        "algorithms/episodes/episode-05-trees.md",
+        "algorithms/episodes/episode-06-graphs.md",
+        "algorithms/episodes/episode-07-dynamic-programming.md",
+        "algorithms/episodes/episode-08-binary-search.md",
+        "algorithms/episodes/episode-09-backtracking.md",
+        "algorithms/episodes/episode-10-system-design-basics.md"
+      ]
+    },
+    {
+      "name": "AI & Machine Learning",
+      "episodes": 8,
+      "duration_minutes": 150,
+      "questions": 40,
+      "files": [
+        "ai-ml/course-outline.md",
+        "ai-ml/questions-bank.md",
+        "ai-ml/episodes/episode-01-ml-basics.md",
+        "ai-ml/episodes/episode-02-neural-networks.md",
+        "ai-ml/episodes/episode-03-nlp-transformers.md",
+        "ai-ml/episodes/episode-04-computer-vision.md",
+        "ai-ml/episodes/episode-05-llms.md",
+        "ai-ml/episodes/episode-06-mlops.md",
+        "ai-ml/episodes/episode-07-ml-coding.md",
+        "ai-ml/episodes/episode-08-ml-system-design.md"
+      ]
+    },
+    {
+      "name": "System Design",
+      "episodes": 6,
+      "duration_minutes": 120,
+      "questions": 0,
+      "files": [
+        "system-design/course-outline.md",
+        "system-design/episodes/episode-01-fundamentals.md",
+        "system-design/episodes/episode-02-url-shortener.md",
+        "system-design/episodes/episode-03-chat-system.md",
+        "system-design/episodes/episode-04-news-feed.md",
+        "system-design/episodes/episode-05-video-streaming.md",
+        "system-design/episodes/episode-06-search-engine.md"
+      ]
+    }
+  ],
+  "supplementary_materials": {
+    "daily_tips": {
+      "count": 30,
+      "files": [
+        "daily-tips/daily-interview-tips.md"
+      ]
+    },
+    "marketing_materials": {
+      "count": 4,
+      "files": [
+        "marketing/linkedin-posts-he.md",
+        "marketing/facebook-groups-he.md",
+        "marketing/reddit-posts-he.md",
+        "marketing/twitter-threads-he.md"
+      ]
+    },
+    "gumroad_pages": {
+      "count": 4,
+      "files": [
+        "gumroad/full-bundle.md",
+        "gumroad/csharp-track.md",
+        "gumroad/algorithms-track.md",
+        "gumroad/ai-ml-track.md"
+      ]
+    }
+  },
+  "all_files": [
+    {
+      "path": "ai-ml/course-outline.md",
+      "size_bytes": 5726,
+      "type": "markdown",
+      "category": "course_outline"
+    },
+    {
+      "path": "ai-ml/questions-bank.md",
+      "size_bytes": 47799,
+      "type": "markdown",
+      "category": "question_bank"
+    },
+    {
+      "path": "ai-ml/episodes/episode-01-ml-basics.md",
+      "size_bytes": 9971,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-02-neural-networks.md",
+      "size_bytes": 10799,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-03-nlp-transformers.md",
+      "size_bytes": 11549,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-04-computer-vision.md",
+      "size_bytes": 12136,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-05-llms.md",
+      "size_bytes": 12708,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-06-mlops.md",
+      "size_bytes": 14038,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-07-ml-coding.md",
+      "size_bytes": 17375,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "ai-ml/episodes/episode-08-ml-system-design.md",
+      "size_bytes": 16084,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/course-outline.md",
+      "size_bytes": 6791,
+      "type": "markdown",
+      "category": "course_outline"
+    },
+    {
+      "path": "algorithms/questions-bank.md",
+      "size_bytes": 42638,
+      "type": "markdown",
+      "category": "question_bank"
+    },
+    {
+      "path": "algorithms/episodes/episode-01-arrays.md",
+      "size_bytes": 13045,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-02-hashmaps.md",
+      "size_bytes": 13005,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-03-linkedlists.md",
+      "size_bytes": 14257,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-04-stacks-queues.md",
+      "size_bytes": 12332,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-05-trees.md",
+      "size_bytes": 11897,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-06-graphs.md",
+      "size_bytes": 14105,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-07-dynamic-programming.md",
+      "size_bytes": 11657,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-08-binary-search.md",
+      "size_bytes": 10680,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-09-backtracking.md",
+      "size_bytes": 13551,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "algorithms/episodes/episode-10-system-design-basics.md",
+      "size_bytes": 16386,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/course-outline.md",
+      "size_bytes": 7219,
+      "type": "markdown",
+      "category": "course_outline"
+    },
+    {
+      "path": "csharp/questions-bank.md",
+      "size_bytes": 40910,
+      "type": "markdown",
+      "category": "question_bank"
+    },
+    {
+      "path": "csharp/episodes/episode-01-basics.md",
+      "size_bytes": 7620,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-02-collections-linq.md",
+      "size_bytes": 7453,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-03-async-await.md",
+      "size_bytes": 8488,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-04-memory.md",
+      "size_bytes": 7782,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-05-design-patterns.md",
+      "size_bytes": 8259,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-06-entity-framework.md",
+      "size_bytes": 6595,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-07-aspnet-core.md",
+      "size_bytes": 8056,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-08-threading.md",
+      "size_bytes": 7333,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-09-live-coding.md",
+      "size_bytes": 7466,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "csharp/episodes/episode-10-mock.md",
+      "size_bytes": 8675,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "daily-tips/daily-interview-tips.md",
+      "size_bytes": 19919,
+      "type": "markdown",
+      "category": "daily_tips"
+    },
+    {
+      "path": "gumroad/ai-ml-track.md",
+      "size_bytes": 5488,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "gumroad/algorithms-track.md",
+      "size_bytes": 5644,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "gumroad/csharp-track.md",
+      "size_bytes": 5040,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "gumroad/full-bundle.md",
+      "size_bytes": 5629,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "marketing/facebook-groups-he.md",
+      "size_bytes": 6671,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "marketing/linkedin-posts-he.md",
+      "size_bytes": 6266,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "marketing/reddit-posts-he.md",
+      "size_bytes": 4807,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "marketing/twitter-threads-he.md",
+      "size_bytes": 6776,
+      "type": "markdown",
+      "category": "marketing"
+    },
+    {
+      "path": "system-design/course-outline.md",
+      "size_bytes": 5918,
+      "type": "markdown",
+      "category": "course_outline"
+    },
+    {
+      "path": "system-design/episodes/episode-01-fundamentals.md",
+      "size_bytes": 10167,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "system-design/episodes/episode-02-url-shortener.md",
+      "size_bytes": 8467,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "system-design/episodes/episode-03-chat-system.md",
+      "size_bytes": 10035,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "system-design/episodes/episode-04-news-feed.md",
+      "size_bytes": 9501,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "system-design/episodes/episode-05-video-streaming.md",
+      "size_bytes": 11485,
+      "type": "markdown",
+      "category": "episode"
+    },
+    {
+      "path": "system-design/episodes/episode-06-search-engine.md",
+      "size_bytes": 12799,
+      "type": "markdown",
+      "category": "episode"
+    }
+  ],
+  "distribution_notes": {
+    "format": "ZIP",
+    "encoding": "UTF-8",
+    "language": "Hebrew (עברית)",
+    "delivery_platform": "Gumroad",
+    "instructions": [
+      "Create ZIP file containing all 50 files from the all_files array above",
+      "Maintain directory structure as specified in paths",
+      "Include README.md with setup instructions in Hebrew",
+      "Add license file (can be Creative Commons for course content)",
+      "Test ZIP extraction before publishing to Gumroad"
+    ]
+  },
+  "metadata": {
+    "created_date": "2026-03-20",
+    "creator": "TechAI Explained",
+    "license": "CC BY-NC-SA 4.0",
+    "language": "he",
+    "target_audience": "Israeli developers",
+    "skill_level": "beginner to advanced",
+    "prerequisites": "Basic programming knowledge"
+  }
+}
