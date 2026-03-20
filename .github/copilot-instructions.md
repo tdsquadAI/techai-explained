@@ -50,3 +50,20 @@ This repo is forked into **github.com/techai-explained/techai-explained** — th
 **Pages URL:** techai-explained.github.io/techai-explained
 
 **⚠️ NEVER reference 'tamirdresher' or 'Tamir Dresher' in any public-facing content.**
+
+
+## Credential Access (Cross-Machine)
+
+All brand credentials are stored in a **private GitHub gist**:
+- Gist ID: `fcdbcbc3849b06fc199186be07e4da75`
+- Fetch: `gh gist view fcdbcbc3849b06fc199186be07e4da75 --raw`
+- Script: `pipeline/fetch-credentials.ps1` (in techai-explained repo)
+
+**On any new machine:**
+1. Authenticate: `gh auth login` (use tamirdresher personal account)
+2. Run: `pipeline/fetch-credentials.ps1`
+3. Credentials appear in `C:\temp\brand-credentials\all-credentials.md`
+
+**In GitHub Actions:** Use `${{ secrets.SECRET_NAME }}` — all secrets are set on org repos.
+
+**Never commit credentials to the repo.** Use `.env` files locally (gitignored) and GitHub secrets for CI.

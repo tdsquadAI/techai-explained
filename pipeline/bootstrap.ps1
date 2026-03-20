@@ -292,3 +292,14 @@ if ($Install) {
 }
 
 Log "=== Bootstrap complete ==="
+
+
+# --- Credential Sync ---
+Write-Host "`n=== Syncing credentials from private gist ===" -ForegroundColor Cyan
+$fetchScript = Join-Path $PSScriptRoot "fetch-credentials.ps1"
+if (Test-Path $fetchScript) {
+    & $fetchScript
+} else {
+    Write-Host "WARN: fetch-credentials.ps1 not found, skipping credential sync" -ForegroundColor Yellow
+}
+
