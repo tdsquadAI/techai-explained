@@ -53,22 +53,26 @@ This repo is forked into **github.com/techai-explained/techai-explained** — th
 
 ## Credential Access (Cross-Machine)
 
-Config is stored as **GitHub Variables** (readable) and passwords as **GitHub Secrets** (write-only).
-
-**Reading variables (any machine with gh auth):**
+**⚠️ IMPORTANT: At session start, ALWAYS run this to load brand config:**
 ```
-gh variable list --repo {org}/{repo}
-gh variable get BRAND_EMAIL --repo {org}/{repo}
+gh variable list --repo techai-explained/techai-explained --json name,value
+```
+
+All config AND passwords are stored as **GitHub Variables** (fully readable).
+
+**Read a single value:**
+```
+gh variable get BRAND_EMAIL --repo techai-explained/techai-explained
 ```
 
 **In GitHub Actions workflows:**
 - Variables: `${{ vars.BRAND_NAME }}`
-- Secrets: `${{ secrets.MAIL_TM_PASSWORD }}`
+- Secrets: `${{ secrets.MAIL_TM_PASSWORD }}` (also available as variables)
 
-**Quick fetch all config for this brand:**
+**To add/update a value:**
 ```
-gh variable list --repo {org}/{repo} --json name,value
+gh variable set NEW_KEY --repo techai-explained/techai-explained --body "value"
 ```
 
-**Never commit credentials to the repo.** Use variables/secrets for all config.
+**Never commit credentials to the repo.** Always use GitHub Variables.
 
