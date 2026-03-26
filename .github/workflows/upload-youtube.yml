@@ -39,6 +39,16 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
+      - name: Check YouTube credentials
+        id: check_creds
+        run: |
+          if [ -z "$YOUTUBE_REFRESH_TOKEN" ]; then
+            echo "::warning::YOUTUBE_REFRESH_TOKEN not set. YouTube upload skipped. See issue #67 for setup guide."
+            echo "skip_upload=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
       - name: Download video artifacts (workflow_run trigger)
         if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@v4
@@ -57,6 +67,8 @@ jobs:
         continue-on-error: true
 
       - name: Upload to YouTube
+        if: steps.check_creds.outputs.skip_upload != 'true'
+        continue-on-error: false
         env:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -77,3 +89,17 @@ jobs:
             --date "$DATE" \
             --language "${{ inputs.language || 'both' }}" \
             $TOPIC_ARG
+
+      - name: Job summary
+        if: always()
+        run: |
+          if [ "${{ steps.check_creds.outputs.skip_upload }}" = "true" ]; then
+            echo "## ⚠️ YouTube Upload Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "Credentials not configured. Follow [issue #67](https://github.com/${{ github.repository }}/issues/67) to set up OAuth secrets." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ job.status }}" = "success" ]; then
+            echo "## ✅ YouTube Upload Succeeded" >> $GITHUB_STEP_SUMMARY
+            echo "Date: ${{ inputs.date || steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ YouTube Upload Failed" >> $GITHUB_STEP_SUMMARY
+            echo "Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
