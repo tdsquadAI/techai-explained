@@ -6,6 +6,7 @@ IDENTITY: No personal names — channel = "TechAI Explained"
 """
 import os
 import sys
+import time
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -13,6 +14,7 @@ from datetime import datetime
 import google.oauth2.credentials
 import googleapiclient.discovery
 import googleapiclient.http
+from googleapiclient.errors import HttpError
 
 # Playlist IDs (set these after creating playlists on YouTube)
 PLAYLISTS = {
@@ -33,6 +35,23 @@ TOPIC_TITLES = {
     "gamedev": "GameDev Weekly",
 }
 
+RETRYABLE_STATUS_CODES = {429, 500, 503}
+MAX_RETRIES = 3
+RETRY_SLEEP_SECONDS = 30
+
+
+def check_credentials():
+    """Verify required YouTube OAuth env vars are set. Exit(0) with clear message if not."""
+    required = ["YOUTUBE_REFRESH_TOKEN", "YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET"]
+    missing = [v for v in required if not os.environ.get(v)]
+    if missing:
+        print(
+            "⚠️ YouTube credentials not configured. "
+            "Set YOUTUBE_REFRESH_TOKEN, YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET secrets. "
+            "See issue #67."
+        )
+        sys.exit(0)
+
 
 def get_youtube_client():
     """Build authenticated YouTube client from stored refresh token."""
@@ -47,7 +66,7 @@ def get_youtube_client():
 
 
 def upload_video(youtube, video_path: Path, topic: str, date_str: str, language: str = "en"):
-    """Upload a single video to YouTube."""
+    """Upload a single video to YouTube with retry on transient errors."""
     lang_suffix = " (Hebrew)" if language == "he" else ""
     title_topic = TOPIC_TITLES.get(topic, topic.upper())
     title = f"{title_topic}{lang_suffix} — {date_str}"
@@ -80,35 +99,57 @@ def upload_video(youtube, video_path: Path, topic: str, date_str: str, language:
     )
 
     print(f"  Uploading: {video_path.name} → '{title}'")
-    request = youtube.videos().insert(part="snippet,status", body=body, media_body=media)
 
-    response = None
-    while response is None:
-        status, response = request.next_chunk()
-        if status:
-            print(f"    Progress: {int(status.progress() * 100)}%")
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            request = youtube.videos().insert(part="snippet,status", body=body, media_body=media)
+            response = None
+            while response is None:
+                status, response = request.next_chunk()
+                if status:
+                    print(f"    Progress: {int(status.progress() * 100)}%")
 
-    video_id = response["id"]
-    print(f"  ✅ Uploaded: https://youtu.be/{video_id}")
+            video_id = response["id"]
+            video_url = f"https://youtu.be/{video_id}"
+            print(f"  ✅ Uploaded: {video_url}")
 
-    # Add to playlist if configured
-    playlist_id = PLAYLISTS.get(topic)
-    if playlist_id:
-        youtube.playlistItems().insert(
-            part="snippet",
-            body={
-                "snippet": {
-                    "playlistId": playlist_id,
-                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
-                }
-            },
-        ).execute()
-        print(f"  📋 Added to playlist: {topic}")
+            # Add to playlist if configured
+            playlist_id = PLAYLISTS.get(topic)
+            if playlist_id:
+                youtube.playlistItems().insert(
+                    part="snippet",
+                    body={
+                        "snippet": {
+                            "playlistId": playlist_id,
+                            "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                        }
+                    },
+                ).execute()
+                print(f"  📋 Added to playlist: {topic}")
 
-    return video_id
+            return video_id
+
+        except HttpError as e:
+            if e.resp.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES:
+                print(
+                    f"  ⚠️ Transient error (HTTP {e.resp.status}) on attempt {attempt}/{MAX_RETRIES}. "
+                    f"Retrying in {RETRY_SLEEP_SECONDS}s..."
+                )
+                time.sleep(RETRY_SLEEP_SECONDS)
+                # Re-create media upload for retry
+                media = googleapiclient.http.MediaFileUpload(
+                    str(video_path),
+                    mimetype="video/mp4",
+                    resumable=True,
+                    chunksize=1024 * 1024 * 5,
+                )
+            else:
+                raise
 
 
 def main():
+    check_credentials()
+
     parser = argparse.ArgumentParser(description="Upload TechAI daily briefs to YouTube")
     parser.add_argument(
         "--date",
@@ -123,8 +164,8 @@ def main():
 
     output_dir = Path(__file__).parent / "output" / args.date
     if not output_dir.exists():
-        print(f"❌ No output directory for {args.date}: {output_dir}")
-        sys.exit(1)
+        print(f"⚠️ No output directory for {args.date}: {output_dir} — skipping upload.")
+        sys.exit(0)
 
     youtube = get_youtube_client()
     topics = (
@@ -135,20 +176,38 @@ def main():
     date_display = datetime.strptime(args.date, "%Y-%m-%d").strftime("%B %d, %Y")
 
     uploaded = 0
+    skipped = 0
+    failed = 0
+
     for topic in topics:
         if args.language in ("en", "both"):
             en_path = output_dir / f"{topic}-brief.mp4"
             if en_path.exists():
-                upload_video(youtube, en_path, topic, date_display, "en")
-                uploaded += 1
+                try:
+                    upload_video(youtube, en_path, topic, date_display, "en")
+                    uploaded += 1
+                except Exception as exc:
+                    print(f"  ❌ Failed to upload {en_path.name}: {exc}")
+                    failed += 1
+            else:
+                skipped += 1
 
         if args.language in ("he", "both"):
             he_path = output_dir / f"{topic}-he-brief.mp4"
             if he_path.exists():
-                upload_video(youtube, he_path, topic, date_display, "he")
-                uploaded += 1
+                try:
+                    upload_video(youtube, he_path, topic, date_display, "he")
+                    uploaded += 1
+                except Exception as exc:
+                    print(f"  ❌ Failed to upload {he_path.name}: {exc}")
+                    failed += 1
+            else:
+                skipped += 1
 
-    print(f"\n✅ Done. Uploaded {uploaded} videos for {args.date}.")
+    print(f"\n✅ Uploaded {uploaded} videos | ⏭️ Skipped {skipped} | ❌ Failed {failed}")
+
+    if failed > 0:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
