@@ -42,9 +42,14 @@ TOPIC_COLORS = {
 def _get_font(size):
     """Return a TrueType font, falling back to default if needed."""
     candidates = [
+        # Windows fonts
         "C:/Windows/Fonts/segoeui.ttf",
         "C:/Windows/Fonts/arial.ttf",
         "C:/Windows/Fonts/calibri.ttf",
+        # Linux fonts (ubuntu-latest runner)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
     ]
     for path in candidates:
         if os.path.exists(path):
@@ -54,9 +59,14 @@ def _get_font(size):
 
 def _get_bold_font(size):
     candidates = [
+        # Windows fonts
         "C:/Windows/Fonts/segoeuib.ttf",
         "C:/Windows/Fonts/arialbd.ttf",
         "C:/Windows/Fonts/calibrib.ttf",
+        # Linux fonts (ubuntu-latest runner)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
     ]
     for path in candidates:
         if os.path.exists(path):
