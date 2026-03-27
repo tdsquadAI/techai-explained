@@ -17,6 +17,10 @@ on:
     workflows: ["Daily Tech Briefs"]
     types: [completed]
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   upload:
     runs-on: ubuntu-latest

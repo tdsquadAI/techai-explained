@@ -358,9 +358,12 @@ async def generate_video(brief_json_path, language="en"):
     await generate_tts(narration_parts[-1], outro_audio, voice=voice)
     audio_files.append(outro_audio)
 
-    # Compose final video — use -he suffix for Hebrew
+    # Compose final video — use -he suffix for Hebrew.
+    # Strip language suffix from topic_id for filename (dotnet-he → dotnet)
+    # so output matches what upload_to_youtube.py expects: {topic}-he-brief.mp4
     suffix = "-he" if is_hebrew else ""
-    output_path = base_dir / f"{topic_id}{suffix}-brief.mp4"
+    file_topic_id = topic_id.removesuffix("-he") if is_hebrew else topic_id
+    output_path = base_dir / f"{file_topic_id}{suffix}-brief.mp4"
     compose_video_ffmpeg(slides, audio_files, str(output_path))
 
     # Clean up slide/audio dirs

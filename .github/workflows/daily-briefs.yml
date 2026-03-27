@@ -64,7 +64,7 @@ jobs:
           fi
 
       - name: Generate Hebrew briefs
-        if: inputs.language == 'both' || inputs.language == 'he'
+        if: ${{ inputs.language != 'en' }}
         run: |
           cd pipeline/daily-briefs
           DATE=$(date +%Y-%m-%d)
