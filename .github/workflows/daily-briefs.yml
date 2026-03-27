@@ -70,7 +70,22 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           for topic in dotnet ai cloud dev; do
             python fetch_news.py "${topic}-he" $DATE --config topics_he.json || true
+            BRIEF="output/$DATE/${topic}-he-brief.json"
+            if [ -f "$BRIEF" ]; then
+              python generate_brief_video.py "$BRIEF" --language he
+            fi
           done
+          
+          # Weekly Hebrew topics on Sunday
+          if [ "$(date +%u)" = "7" ]; then
+            for topic in security gamedev; do
+              python fetch_news.py "${topic}-he" $DATE --config topics_he.json || true
+              BRIEF="output/$DATE/${topic}-he-brief.json"
+              if [ -f "$BRIEF" ]; then
+                python generate_brief_video.py "$BRIEF" --language he
+              fi
+            done
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

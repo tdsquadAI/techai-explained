@@ -46,10 +46,10 @@ def fetch_topic_news(topic_config, max_items=5):
     return all_items[:max_items]
 
 
-def generate_brief_json(topic_id, date_str=None):
+def generate_brief_json(topic_id, date_str=None, config_file='topics.json'):
     """Generate the news brief JSON for a topic."""
-    topics_path = Path(__file__).parent / 'topics.json'
-    with open(topics_path) as f:
+    topics_path = Path(__file__).parent / config_file
+    with open(topics_path, encoding='utf-8') as f:
         config = json.load(f)
 
     topic = next((t for t in config['topics'] if t['id'] == topic_id), None)
@@ -83,14 +83,19 @@ def generate_brief_json(topic_id, date_str=None):
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f'{topic_id}-brief.json'
 
-    with open(output_path, 'w') as f:
-        json.dump(brief, f, indent=2)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(brief, f, indent=2, ensure_ascii=False)
 
     print(f"Generated brief: {output_path}")
     return brief
 
 
 if __name__ == '__main__':
-    topic_id = sys.argv[1] if len(sys.argv) > 1 else 'dev'
-    date_str = sys.argv[2] if len(sys.argv) > 2 else None
-    generate_brief_json(topic_id, date_str)
+    import argparse
+    parser = argparse.ArgumentParser(description='Fetch tech news for a topic')
+    parser.add_argument('topic_id', help='Topic ID (e.g., dotnet, ai, cloud, dev)')
+    parser.add_argument('date', nargs='?', default=None, help='Date (YYYY-MM-DD)')
+    parser.add_argument('--config', default='topics.json', help='Config file (default: topics.json)')
+    args = parser.parse_args()
+    
+    generate_brief_json(args.topic_id, args.date, args.config)
