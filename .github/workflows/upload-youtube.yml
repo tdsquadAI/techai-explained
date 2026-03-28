@@ -13,6 +13,15 @@ on:
         description: 'Language: en, he, or both'
         required: false
         default: 'both'
+      max_uploads:
+        description: 'Max videos to upload this run (default: 6)'
+        required: false
+        default: '6'
+  schedule:
+    # EN videos at 06:00 UTC (quota resets ~07:00 UTC / midnight PT)
+    - cron: '0 6 * * *'
+    # HE videos at 12:00 UTC (6 hours later, well within fresh quota)
+    - cron: '0 12 * * *'
   workflow_run:
     workflows: ["Daily Tech Briefs"]
     types: [completed]
@@ -24,7 +33,7 @@ permissions:
 jobs:
   upload:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +49,22 @@ jobs:
       - name: Set upload date
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Determine language for scheduled runs
+        id: lang
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            HOUR=$(date -u +'%H')
+            if [ "$HOUR" -lt 10 ]; then
+              echo "language=en" >> $GITHUB_OUTPUT
+              echo "📌 Scheduled run: English videos (06:00 UTC batch)"
+            else
+              echo "language=he" >> $GITHUB_OUTPUT
+              echo "📌 Scheduled run: Hebrew videos (12:00 UTC batch)"
+            fi
+          else
+            echo "language=${{ inputs.language || 'both' }}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Check YouTube credentials
         id: check_creds
@@ -91,10 +116,13 @@ jobs:
           if [ -n "${{ inputs.topic }}" ]; then
             TOPIC_ARG="--topic ${{ inputs.topic }}"
           fi
+          MAX_UPLOADS="${{ inputs.max_uploads || '6' }}"
           python pipeline/daily-briefs/upload_to_youtube.py \
             --date "$DATE" \
-            --language "${{ inputs.language || 'both' }}" \
+            --language "${{ steps.lang.outputs.language }}" \
             --search-dir pipeline/daily-briefs/output/ \
+            --max-uploads "$MAX_UPLOADS" \
+            --delay 60 \
             $TOPIC_ARG
 
       - name: Job summary
@@ -104,9 +132,13 @@ jobs:
             echo "## ⚠️ YouTube Upload Skipped" >> $GITHUB_STEP_SUMMARY
             echo "Credentials not configured. Follow [issue #67](https://github.com/${{ github.repository }}/issues/67) to set up OAuth secrets." >> $GITHUB_STEP_SUMMARY
           elif [ "${{ job.status }}" = "success" ]; then
-            echo "## ✅ YouTube Upload Succeeded" >> $GITHUB_STEP_SUMMARY
+            echo "## ✅ YouTube Upload Completed" >> $GITHUB_STEP_SUMMARY
             echo "Date: ${{ inputs.date || steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+            echo "Language: ${{ steps.lang.outputs.language }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> Quota-safe mode: max ${{ inputs.max_uploads || '6' }} uploads/run, 60s delay between each." >> $GITHUB_STEP_SUMMARY
           else
-            echo "## ❌ YouTube Upload Failed" >> $GITHUB_STEP_SUMMARY
+            echo "## ⚠️ YouTube Upload Partially Complete" >> $GITHUB_STEP_SUMMARY
+            echo "Some uploads may have hit quota. They will retry on the next scheduled run." >> $GITHUB_STEP_SUMMARY
             echo "Check the logs above for details." >> $GITHUB_STEP_SUMMARY
           fi

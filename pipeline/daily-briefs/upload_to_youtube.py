@@ -36,8 +36,24 @@ TOPIC_TITLES = {
 }
 
 RETRYABLE_STATUS_CODES = {429, 500, 503}
-MAX_RETRIES = 3
-RETRY_SLEEP_SECONDS = 30
+MAX_RETRIES = 5
+BASE_RETRY_SECONDS = 30
+
+# Quota-exceeded errors are non-fatal — video will be picked up on next scheduled run
+QUOTA_REASONS = {"uploadLimitExceeded", "quotaExceeded", "rateLimitExceeded", "dailyLimitExceeded"}
+
+
+def is_quota_error(exc: HttpError) -> bool:
+    """Check if an HttpError is a YouTube quota/rate limit error."""
+    if exc.resp.status == 403:
+        try:
+            import json
+            detail = json.loads(exc.content.decode("utf-8"))
+            errors = detail.get("error", {}).get("errors", [])
+            return any(e.get("reason") in QUOTA_REASONS for e in errors)
+        except Exception:
+            pass
+    return False
 
 
 def check_credentials():
@@ -66,7 +82,11 @@ def get_youtube_client():
 
 
 def upload_video(youtube, video_path: Path, topic: str, date_str: str, language: str = "en"):
-    """Upload a single video to YouTube with retry on transient errors."""
+    """Upload a single video to YouTube with exponential backoff on transient errors.
+
+    Returns:
+        video_id on success, "quota_exceeded" if quota hit, raises on other errors.
+    """
     lang_suffix = " (Hebrew)" if language == "he" else ""
     title_topic = TOPIC_TITLES.get(topic, topic.upper())
     title = f"{title_topic}{lang_suffix} — {date_str}"
@@ -116,27 +136,36 @@ def upload_video(youtube, video_path: Path, topic: str, date_str: str, language:
             # Add to playlist if configured
             playlist_id = PLAYLISTS.get(topic)
             if playlist_id:
-                youtube.playlistItems().insert(
-                    part="snippet",
-                    body={
-                        "snippet": {
-                            "playlistId": playlist_id,
-                            "resourceId": {"kind": "youtube#video", "videoId": video_id},
-                        }
-                    },
-                ).execute()
-                print(f"  📋 Added to playlist: {topic}")
+                try:
+                    youtube.playlistItems().insert(
+                        part="snippet",
+                        body={
+                            "snippet": {
+                                "playlistId": playlist_id,
+                                "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                            }
+                        },
+                    ).execute()
+                    print(f"  📋 Added to playlist: {topic}")
+                except HttpError as pe:
+                    print(f"  ⚠️ Playlist add failed (non-fatal): {pe}")
 
             return video_id
 
         except HttpError as e:
+            # Quota exceeded — stop retrying, mark for next run
+            if is_quota_error(e):
+                print(f"  ⏳ Quota exceeded for {video_path.name} — will retry next scheduled run")
+                return "quota_exceeded"
+
+            # Transient server errors — exponential backoff
             if e.resp.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES:
+                backoff = BASE_RETRY_SECONDS * (2 ** (attempt - 1))
                 print(
                     f"  ⚠️ Transient error (HTTP {e.resp.status}) on attempt {attempt}/{MAX_RETRIES}. "
-                    f"Retrying in {RETRY_SLEEP_SECONDS}s..."
+                    f"Retrying in {backoff}s..."
                 )
-                time.sleep(RETRY_SLEEP_SECONDS)
-                # Re-create media upload for retry
+                time.sleep(backoff)
                 media = googleapiclient.http.MediaFileUpload(
                     str(video_path),
                     mimetype="video/mp4",
@@ -165,6 +194,19 @@ def main():
         dest="search_dir",
         default=None,
         help="Root dir to search for brief MP4s (used when artifact names vary)",
+    )
+    parser.add_argument(
+        "--max-uploads",
+        dest="max_uploads",
+        type=int,
+        default=6,
+        help="Maximum number of videos to upload in this run (default: 6)",
+    )
+    parser.add_argument(
+        "--delay",
+        type=int,
+        default=60,
+        help="Seconds to wait between uploads to avoid rate limits (default: 60)",
     )
     args = parser.parse_args()
 
@@ -199,35 +241,55 @@ def main():
     uploaded = 0
     skipped = 0
     failed = 0
+    quota_deferred = 0
+    quota_hit = False
 
     for topic in topics:
-        if args.language in ("en", "both"):
-            en_path = output_dir / f"{topic}-brief.mp4"
-            if en_path.exists():
-                try:
-                    upload_video(youtube, en_path, topic, date_display, "en")
-                    uploaded += 1
-                except Exception as exc:
-                    print(f"  ❌ Failed to upload {en_path.name}: {exc}")
-                    failed += 1
-            else:
+        for lang, suffix in [("en", "-brief.mp4"), ("he", "-he-brief.mp4")]:
+            if args.language not in (lang, "both"):
+                continue
+
+            video_path = output_dir / f"{topic}{suffix}"
+            if not video_path.exists():
                 skipped += 1
+                continue
 
-        if args.language in ("he", "both"):
-            he_path = output_dir / f"{topic}-he-brief.mp4"
-            if he_path.exists():
-                try:
-                    upload_video(youtube, he_path, topic, date_display, "he")
+            # Respect upload cap
+            if uploaded >= args.max_uploads:
+                print(f"  ⏸️ Upload cap ({args.max_uploads}) reached — deferring {video_path.name}")
+                quota_deferred += 1
+                continue
+
+            # If we already hit quota, don't attempt more uploads
+            if quota_hit:
+                print(f"  ⏳ Quota already exceeded — deferring {video_path.name} to next run")
+                quota_deferred += 1
+                continue
+
+            try:
+                result = upload_video(youtube, video_path, topic, date_display, lang)
+                if result == "quota_exceeded":
+                    quota_deferred += 1
+                    quota_hit = True
+                else:
                     uploaded += 1
-                except Exception as exc:
-                    print(f"  ❌ Failed to upload {he_path.name}: {exc}")
-                    failed += 1
-            else:
-                skipped += 1
+                    # Delay between uploads to stay under rate limits
+                    if args.delay > 0:
+                        print(f"  ⏱️ Waiting {args.delay}s before next upload...")
+                        time.sleep(args.delay)
+            except Exception as exc:
+                print(f"  ❌ Failed to upload {video_path.name}: {exc}")
+                failed += 1
 
-    print(f"\n✅ Uploaded {uploaded} videos | ⏭️ Skipped {skipped} | ❌ Failed {failed}")
+    print(f"\n📊 Results: ✅ {uploaded} uploaded | ⏭️ {skipped} skipped | "
+          f"⏳ {quota_deferred} deferred | ❌ {failed} failed")
 
-    if failed > 0:
+    if quota_deferred > 0:
+        print(f"ℹ️  {quota_deferred} video(s) deferred due to quota — will upload on next scheduled run.")
+
+    # Exit 0 even if quota was hit — this is expected for new channels.
+    # Only hard-fail if there were non-quota errors AND zero successful uploads.
+    if failed > 0 and uploaded == 0 and quota_deferred == 0:
         sys.exit(1)
 
 
