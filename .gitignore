@@ -1,8 +1,12 @@
 node_modules/
-_site/
+docs_old/
 .DS_Store
 *.log
 .env
 pipeline/daily-briefs/output/
 __pycache__/
 *.pyc
+
+
+pipeline/daily-briefs/client_secrets.json
+pipeline/daily-briefs/run_auth.py

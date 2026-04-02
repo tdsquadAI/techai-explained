@@ -3,8 +3,8 @@ Last updated: 2026-03-20
 
 ## Brand Identity
 - **Name:** TechAI Explained
-- **NEVER mention "Tamir Dresher"** — this is an independent brand
-- **Sites detached** from tamirdresher.com (GitHub Pages disabled)
+- **NEVER mention "real owner identity"** — this is an independent brand
+- **Sites detached** from personal GitHub Pages (GitHub Pages disabled)
 - **Need:** Deploy to Netlify/Vercel for independent URL
 - **Funding:** GitHub Sponsors configured (FUNDING.yml)
 

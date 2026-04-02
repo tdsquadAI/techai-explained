@@ -4,18 +4,18 @@
   "repos": [
     {
       "name": "techai-explained",
-      "path": "C:\\Users\\tamirdresher\\source\\repos\\techai-explained",
-      "github": "tamirdresher/techai-explained"
+      "path": "C:\\Users\\tdsquadai\\source\\repos\\techai-explained",
+      "github": "tdsquadai/techai-explained"
     },
     {
       "name": "content-empire",
-      "path": "C:\\Users\\tamirdresher\\source\\repos\\content-empire",
-      "github": "tamirdresher/content-empire"
+      "path": "C:\\Users\\tdsquadai\\source\\repos\\content-empire",
+      "github": "tdsquadai/content-empire"
     },
     {
       "name": "jellybolt-games",
-      "path": "C:\\Users\\tamirdresher\\source\\repos\\jellybolt-games",
-      "github": "tamirdresher/jellybolt-games"
+      "path": "C:\\Users\\tdsquadai\\source\\repos\\jellybolt-games",
+      "github": "tdsquadai/jellybolt-games"
     }
   ],
   "scheduled_tasks": [
@@ -62,7 +62,7 @@
       {"id": "python-deps", "description": "feedparser, edge-tts, Pillow, moviepy installed"},
       {"id": "startup-task", "description": "TechAI-StartupCatchUp scheduled task registered"},
       {"id": "daily-task", "description": "TechAI-DailyBriefs scheduled task registered"},
-      {"id": "git-auth", "description": "gh auth login completed for tamirdresher"},
+      {"id": "git-auth", "description": "gh auth login completed for tdsquadai"},
       {"id": "first-briefs", "description": "First daily briefs generated successfully"},
       {"id": "ralphs-launched", "description": "All 3 Ralphs launched at least once"}
     ]

@@ -42,9 +42,14 @@ TOPIC_COLORS = {
 def _get_font(size):
     """Return a TrueType font, falling back to default if needed."""
     candidates = [
+        # Windows fonts
         "C:/Windows/Fonts/segoeui.ttf",
         "C:/Windows/Fonts/arial.ttf",
         "C:/Windows/Fonts/calibri.ttf",
+        # Linux fonts (ubuntu-latest runner)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
     ]
     for path in candidates:
         if os.path.exists(path):
@@ -54,9 +59,14 @@ def _get_font(size):
 
 def _get_bold_font(size):
     candidates = [
+        # Windows fonts
         "C:/Windows/Fonts/segoeuib.ttf",
         "C:/Windows/Fonts/arialbd.ttf",
         "C:/Windows/Fonts/calibrib.ttf",
+        # Linux fonts (ubuntu-latest runner)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
     ]
     for path in candidates:
         if os.path.exists(path):
@@ -265,7 +275,12 @@ def compose_video_ffmpeg(slides, audio_files, output_path, per_slide_secs=None):
         )
         if clip_result.returncode != 0:
             print(f"ffmpeg clip {idx} error: {clip_result.stderr[:200]}", file=sys.stderr)
-        concat_entries.append(clip_path)
+        else:
+            concat_entries.append(clip_path)
+
+    if not concat_entries:
+        print(f"ERROR: No valid clips generated for {output_path}", file=sys.stderr)
+        return
 
     # Write concat file (use just filenames since clips are in same directory)
     concat_file = str(tmp_dir / "concat.txt")
@@ -343,9 +358,12 @@ async def generate_video(brief_json_path, language="en"):
     await generate_tts(narration_parts[-1], outro_audio, voice=voice)
     audio_files.append(outro_audio)
 
-    # Compose final video — use -he suffix for Hebrew
+    # Compose final video — use -he suffix for Hebrew.
+    # Strip language suffix from topic_id for filename (dotnet-he → dotnet)
+    # so output matches what upload_to_youtube.py expects: {topic}-he-brief.mp4
     suffix = "-he" if is_hebrew else ""
-    output_path = base_dir / f"{topic_id}{suffix}-brief.mp4"
+    file_topic_id = topic_id.removesuffix("-he") if is_hebrew else topic_id
+    output_path = base_dir / f"{file_topic_id}{suffix}-brief.mp4"
     compose_video_ffmpeg(slides, audio_files, str(output_path))
 
     # Clean up slide/audio dirs

@@ -4,12 +4,12 @@
   "description": "TechAI Explained - Tech education tutorials and guides",
   "main": "index.js",
   "scripts": {
-    "build": "npx @11ty/eleventy --pathprefix=/techai-explained/",
+    "build": "npx @11ty/eleventy",
     "dev": "npx @11ty/eleventy --serve --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://tamirdresher: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@github.com/tamirdresher/techai-explained.git"
+    "url": "git+https://github.com/tdsquadAI/techai-explained.git"
   },
   "keywords": [],
   "author": "",

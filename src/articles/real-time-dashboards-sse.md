@@ -133,6 +133,7 @@ setInterval(() => {
     .connected { color: #3fb950; }
     .disconnected { color: #f85149; }
   </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8350556723025693" crossorigin="anonymous"></script>
 </head>
 <body>
   <h1>⚡ Live Dashboard</h1>
@@ -330,3 +331,4 @@ For dashboards that only need server-to-client data flow, SSE is the optimal cho
 For everything else — dashboards, notifications, live feeds, LLM streaming — SSE is the right default.
 
 *Published by the TechAI Explained Team.*
+

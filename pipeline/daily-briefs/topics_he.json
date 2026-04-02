@@ -4,6 +4,11 @@
       "id": "dotnet-he",
       "name": "דוט-נט יומי",
       "description": "חדשות יומיות על דוט-נט ו-C#",
+      "rss_feeds": [
+        "https://devblogs.microsoft.com/dotnet/feed/",
+        "https://www.hanselman.com/blog/feed/rss",
+        "https://andrewlock.net/rss.xml"
+      ],
       "keywords": ["dotnet", "csharp", "aspnet", "blazor"],
       "schedule": "daily",
       "language": "he",
@@ -15,6 +20,11 @@
       "id": "ai-he",
       "name": "AI יומי",
       "description": "חדשות יומיות בתחום הבינה המלאכותית",
+      "rss_feeds": [
+        "https://openai.com/blog/rss.xml",
+        "https://blog.google/technology/ai/rss/",
+        "https://huggingface.co/blog/feed.xml"
+      ],
       "keywords": ["ai", "llm", "gpt", "claude", "machine learning"],
       "schedule": "daily",
       "language": "he",
@@ -26,6 +36,11 @@
       "id": "cloud-he",
       "name": "ענן יומי",
       "description": "חדשות יומיות על ענן ו-DevOps",
+      "rss_feeds": [
+        "https://azure.microsoft.com/en-us/blog/feed/",
+        "https://aws.amazon.com/blogs/aws/feed/",
+        "https://cloud.google.com/blog/rss"
+      ],
       "keywords": ["kubernetes", "docker", "azure", "aws", "devops"],
       "schedule": "daily",
       "language": "he",
@@ -37,6 +52,11 @@
       "id": "dev-he",
       "name": "מפתחים יומי",
       "description": "חדשות כלליות למפתחים",
+      "rss_feeds": [
+        "https://dev.to/feed",
+        "https://hnrss.org/frontpage",
+        "https://www.infoq.com/feed/"
+      ],
       "keywords": ["programming", "developer", "software", "open source"],
       "schedule": "daily",
       "language": "he",
@@ -48,6 +68,10 @@
       "id": "security-he",
       "name": "סייבר שבועי",
       "description": "חדשות אבטחת מידע שבועיות",
+      "rss_feeds": [
+        "https://krebsonsecurity.com/feed/",
+        "https://thehackernews.com/feeds/posts/default?alt=rss"
+      ],
       "keywords": ["security", "vulnerability", "CVE", "breach"],
       "schedule": "weekly",
       "language": "he",
@@ -59,6 +83,9 @@
       "id": "gamedev-he",
       "name": "פיתוח משחקים שבועי",
       "description": "חדשות ותחומים בפיתוח משחקים",
+      "rss_feeds": [
+        "https://www.gamedeveloper.com/rss.xml"
+      ],
       "keywords": ["game dev", "unity", "godot", "indie"],
       "schedule": "weekly",
       "language": "he",

@@ -1,0 +1,82 @@
+name: Post Articles to Dev.to
+
+on:
+  workflow_dispatch:
+    inputs:
+      article:
+        description: 'Article slug to post (e.g. rag-explained) or "all" for all new articles'
+        required: false
+        default: 'all'
+      dry_run:
+        description: 'Dry run — simulate without actually posting'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      force:
+        description: 'Force re-post even if article was already posted'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+  push:
+    branches: [main]
+    paths:
+      - 'src/articles/devto/**.md'
+
+jobs:
+  post-to-devto:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Determine article target
+        id: config
+        run: |
+          ARTICLE="${{ github.event.inputs.article || 'all' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          FORCE="${{ github.event.inputs.force || 'false' }}"
+          echo "article=$ARTICLE" >> $GITHUB_OUTPUT
+          echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
+          echo "force=$FORCE" >> $GITHUB_OUTPUT
+          echo "Posting: $ARTICLE | Dry run: $DRY_RUN | Force: $FORCE"
+
+      - name: Post articles to Dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          ARGS="--article ${{ steps.config.outputs.article }}"
+
+          if [ "${{ steps.config.outputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          if [ "${{ steps.config.outputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+
+          python scripts/post-to-devto.py $ARGS
+
+      - name: Commit tracking file
+        if: ${{ steps.config.outputs.dry_run != 'true' }}
+        run: |
+          git config user.name "TechAI Explained"
+          git config user.email "techai-explained@users.noreply.github.com"
+          git add src/articles/devto/posted.json || true
+          git diff --staged --quiet || git commit -m "chore: update Dev.to posting tracker [skip ci]"
+          git push || true

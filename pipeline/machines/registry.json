@@ -1,6 +1,6 @@
 {
   "machines": {
-    "CPC-tamir-3H7BI": {
+    "CPC-dev-machine": {
       "setup_complete": [
         "repos-cloned",
         "bootstrap-installed",
@@ -15,8 +15,8 @@
       "setup_pending": [],
       "os": "Microsoft Windows NT 10.0.26200.0",
       "first_seen": "2026-03-20T07:38:22Z",
-      "user": "tamirdresher",
-      "hostname": "CPC-tamir-3H7BI"
+      "user": "tdsquadai",
+      "hostname": "CPC-dev-machine"
     }
   }
 }

@@ -3,6 +3,9 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
 
+  // Exclude devto-specific articles from site build (they're only for Dev.to posting)
+  eleventyConfig.ignores.add("src/articles/devto");
+
   eleventyConfig.addPassthroughCopy("src/css");
   eleventyConfig.addPassthroughCopy("src/img");
 
@@ -27,7 +30,7 @@ module.exports = function(eleventyConfig) {
   return {
     dir: {
       input: "src",
-      output: "_site",
+      output: "docs",
       includes: "_includes",
       data: "_data"
     },
@@ -35,3 +38,4 @@ module.exports = function(eleventyConfig) {
     htmlTemplateEngine: "njk"
   };
 };
+

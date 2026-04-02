@@ -96,7 +96,7 @@ pip install edge-tts Pillow moviepy
 ### Generate a Video
 
 ```powershell
-cd C:\Users\tamirdresher\source\repos\techai-explained
+cd C:\\Users\\tdsquadai\\source\repos\techai-explained
 python pipeline/generate_video.py pipeline/scripts/01-ai-agents-explained.md --output pipeline/output/01-ai-agents-explained.mp4
 ```
 

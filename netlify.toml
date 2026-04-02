@@ -1,0 +1,13 @@
+[build]
+  command = "npm ci && npx @11ty/eleventy"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=3600"

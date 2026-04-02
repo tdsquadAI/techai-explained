@@ -165,6 +165,7 @@ def make_title_slide(brief, output_path, is_hebrew=False):
         draw.text((120, 480), f"{n} stories today", fill=(140, 140, 180), font=count_font)
         draw.text((120, HEIGHT - 80), "TechAI Explained", fill=(100, 100, 140), font=brand_font)
 
+    os.makedirs(os.path.dirname(str(output_path)), exist_ok=True)
     img.save(output_path)
 
 
@@ -199,6 +200,7 @@ def make_item_slide(brief, index, item, output_path, is_hebrew=False):
         url = url[:80] + "…"
     draw.text((120, HEIGHT - 80), url, fill=(100, 100, 140), font=src_font)
 
+    os.makedirs(os.path.dirname(str(output_path)), exist_ok=True)
     img.save(output_path)
 
 
@@ -219,6 +221,7 @@ def make_outro_slide(brief, output_path, is_hebrew=False):
         draw.text((120, 440), "Subscribe for daily tech briefs", fill=(180, 180, 220), font=sub_font)
 
     draw.text((120, HEIGHT - 80), "TechAI Explained", fill=(100, 100, 140), font=brand_font)
+    os.makedirs(os.path.dirname(str(output_path)), exist_ok=True)
     img.save(output_path)
 
 
@@ -263,7 +266,7 @@ def compose_video_ffmpeg(slides, audio_files, output_path, per_slide_secs=None):
             duration = per_slide_secs[idx] if per_slide_secs else 8.0
 
         clip_path = str(tmp_dir / f"clip_{idx:03d}.mp4")
-        subprocess.run(
+        clip_result = subprocess.run(
             [
                 "ffmpeg", "-y",
                 "-loop", "1", "-i", slide_path,
@@ -275,9 +278,16 @@ def compose_video_ffmpeg(slides, audio_files, output_path, per_slide_secs=None):
                 "-shortest",
                 clip_path,
             ],
-            capture_output=True, timeout=120,
+            capture_output=True, text=True, timeout=120,
         )
-        concat_entries.append(clip_path)
+        if clip_result.returncode != 0:
+            print(f"ffmpeg clip {idx} error: {clip_result.stderr[:200]}", file=sys.stderr)
+        else:
+            concat_entries.append(clip_path)
+
+    if not concat_entries:
+        print(f"ERROR: No valid clips generated for {output_path}", file=sys.stderr)
+        return
 
     concat_file = str(tmp_dir / "concat.txt")
     with open(concat_file, "w") as f:
