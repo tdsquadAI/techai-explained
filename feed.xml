@@ -127,7 +127,6 @@ setInterval(() =&amp;gt; {
     .connected { color: #3fb950; }
     .disconnected { color: #f85149; }
   &amp;lt;/style&amp;gt;
-  &amp;lt;script async src=&amp;quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8350556723025693&amp;quot; crossorigin=&amp;quot;anonymous&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
 &amp;lt;/head&amp;gt;
 &amp;lt;body&amp;gt;
   &amp;lt;h1&amp;gt;⚡ Live Dashboard&amp;lt;/h1&amp;gt;
