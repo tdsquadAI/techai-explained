@@ -14,9 +14,9 @@ on:
         required: false
         default: 'both'
       max_uploads:
-        description: 'Max videos to upload this run (default: 1 for quota safety)'
+        description: 'Max videos to upload this run (default: 6, auto-stops on quota)'
         required: false
-        default: '1'
+        default: '6'
   schedule:
     # Once daily at 07:00 UTC (after quota resets ~midnight PT / 07:00 UTC)
     - cron: '0 7 * * *'
@@ -116,7 +116,7 @@ jobs:
           if [ -n "${{ inputs.topic }}" ]; then
             TOPIC_ARG="--topic ${{ inputs.topic }}"
           fi
-          MAX_UPLOADS="${{ inputs.max_uploads || '1' }}"
+          MAX_UPLOADS="${{ inputs.max_uploads || '6' }}"
 
           python pipeline/daily-briefs/upload_to_youtube.py \
             --date "$DATE" \
@@ -148,7 +148,7 @@ jobs:
             echo "## ✅ YouTube Upload Completed" >> $GITHUB_STEP_SUMMARY
             echo "Date: ${{ inputs.date || steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "> Drip-feed mode: max ${{ inputs.max_uploads || '1' }} upload/run to stay under YouTube quota." >> $GITHUB_STEP_SUMMARY
+            echo "> Drip-feed mode: max ${{ inputs.max_uploads || '6' }} upload/run to stay under YouTube quota." >> $GITHUB_STEP_SUMMARY
           else
             echo "## ⚠️ YouTube Upload Deferred" >> $GITHUB_STEP_SUMMARY
             echo "Quota may have been hit. Videos will retry on the next scheduled run." >> $GITHUB_STEP_SUMMARY
