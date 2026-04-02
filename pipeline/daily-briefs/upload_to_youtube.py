@@ -1,5 +1,6 @@
 """
-Upload TechAI daily brief videos to YouTube.
+Upload TechAI videos to YouTube.
+Supports daily briefs AND pre-produced series videos with upload tracking.
 Uses YouTube Data API v3 with OAuth2 refresh token stored as env var.
 
 IDENTITY: No personal names — channel = "TechAI Explained"
@@ -7,6 +8,7 @@ IDENTITY: No personal names — channel = "TechAI Explained"
 import os
 import sys
 import time
+import json
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -41,6 +43,25 @@ BASE_RETRY_SECONDS = 30
 
 # Quota-exceeded errors are non-fatal — video will be picked up on next scheduled run
 QUOTA_REASONS = {"uploadLimitExceeded", "quotaExceeded", "rateLimitExceeded", "dailyLimitExceeded"}
+
+# Upload tracker file — records which files have already been uploaded
+TRACKER_PATH = Path(__file__).parent.parent / "upload-tracker.json"
+
+
+def load_tracker() -> dict:
+    """Load the upload tracker. Returns dict mapping filename -> {video_id, uploaded_at}."""
+    if TRACKER_PATH.exists():
+        try:
+            return json.loads(TRACKER_PATH.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {}
+
+
+def save_tracker(tracker: dict):
+    """Persist the upload tracker."""
+    TRACKER_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TRACKER_PATH.write_text(json.dumps(tracker, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 def is_quota_error(exc: HttpError) -> bool:
@@ -212,11 +233,35 @@ def main():
         default=60,
         help="Seconds to wait between uploads to avoid rate limits (default: 60)",
     )
+    parser.add_argument(
+        "--series-dir",
+        dest="series_dir",
+        default=None,
+        help="Directory containing pre-produced series videos (uploaded first, before daily briefs)",
+    )
     args = parser.parse_args()
 
+    tracker = load_tracker()
+
+    # --- Phase 1: Collect series videos (pre-produced, uploaded first) ---
+    series_queue = []
+    if args.series_dir:
+        series_root = Path(args.series_dir)
+        if series_root.exists():
+            for mp4 in sorted(series_root.glob("*.mp4")):
+                if mp4.name not in tracker:
+                    series_queue.append(mp4)
+                else:
+                    print(f"  ⏭️ Already uploaded: {mp4.name} → https://youtu.be/{tracker[mp4.name]['video_id']}")
+            if series_queue:
+                print(f"📦 {len(series_queue)} series video(s) queued for upload")
+
+    # --- Phase 2: Collect daily brief videos ---
     default_dir = Path(__file__).parent / "output" / args.date
+    has_briefs = False
     if default_dir.exists():
         output_dir = default_dir
+        has_briefs = True
     elif args.search_dir:
         import shutil
         search_root = Path(args.search_dir)
@@ -226,21 +271,16 @@ def main():
             dest = output_dir / mp4.name
             if not dest.exists():
                 shutil.copy2(mp4, dest)
-                print(f"  �� Collected {mp4.name} from {mp4.parent.name}/")
-        if not any(output_dir.iterdir()):
-            print(f"⚠️ No MP4 files found under {search_root} — skipping upload.")
-            sys.exit(0)
+                print(f"  📦 Collected {mp4.name} from {mp4.parent.name}/")
+        has_briefs = any(output_dir.glob("*.mp4"))
     else:
-        print(f"⚠️ No output directory for {args.date}: {default_dir} — skipping upload.")
+        output_dir = default_dir
+
+    if not series_queue and not has_briefs:
+        print(f"⚠️ No videos to upload (no series videos, no briefs for {args.date})")
         sys.exit(0)
 
     youtube = get_youtube_client()
-    topics = (
-        [args.topic]
-        if args.topic
-        else ["dotnet", "ai", "cloud", "dev", "security", "gamedev"]
-    )
-    date_display = datetime.strptime(args.date, "%Y-%m-%d").strftime("%B %d, %Y")
 
     uploaded = 0
     skipped = 0
@@ -248,44 +288,79 @@ def main():
     quota_deferred = 0
     quota_hit = False
 
-    for topic in topics:
-        for lang, suffix in [("en", "-brief.mp4"), ("he", "-he-brief.mp4")]:
-            if args.language not in (lang, "both"):
-                continue
-
-            video_path = output_dir / f"{topic}{suffix}"
-            if not video_path.exists():
-                skipped += 1
-                continue
-
-            # Respect upload cap
-            if uploaded >= args.max_uploads:
-                print(f"  ⏸️ Upload cap ({args.max_uploads}) reached — deferring {video_path.name}")
+    def try_upload(video_path, topic, title_date, lang="en"):
+        """Attempt upload, returns True if uploaded, updates counters via nonlocal."""
+        nonlocal uploaded, failed, quota_deferred, quota_hit
+        if uploaded >= args.max_uploads:
+            print(f"  ⏸️ Upload cap ({args.max_uploads}) reached — deferring {video_path.name}")
+            quota_deferred += 1
+            return False
+        if quota_hit:
+            print(f"  ⏳ Quota already hit — deferring {video_path.name} to next run")
+            quota_deferred += 1
+            return False
+        try:
+            result = upload_video(youtube, video_path, topic, title_date, lang)
+            if result == "quota_exceeded":
                 quota_deferred += 1
-                continue
+                quota_hit = True
+                return False
+            else:
+                uploaded += 1
+                tracker[video_path.name] = {
+                    "video_id": result,
+                    "uploaded_at": datetime.now().isoformat(),
+                }
+                save_tracker(tracker)
+                if args.delay > 0 and uploaded < args.max_uploads:
+                    print(f"  ⏱️ Waiting {args.delay}s before next upload...")
+                    time.sleep(args.delay)
+                return True
+        except Exception as exc:
+            print(f"  ❌ Failed to upload {video_path.name}: {exc}")
+            failed += 1
+            return False
 
-            # If we already hit quota, don't attempt more uploads
-            if quota_hit:
-                print(f"  ⏳ Quota already exceeded — deferring {video_path.name} to next run")
-                quota_deferred += 1
-                continue
+    # --- Upload series videos first (higher priority, evergreen content) ---
+    for video_path in series_queue:
+        if uploaded >= args.max_uploads or quota_hit:
+            quota_deferred += 1
+            continue
+        # Derive title from filename: "03-docker-vs-podman.mp4" → "Docker vs Podman"
+        stem = video_path.stem
+        # Strip leading number prefix (e.g., "03-")
+        parts = stem.split("-", 1)
+        if len(parts) > 1 and parts[0].isdigit():
+            title_raw = parts[1]
+        else:
+            title_raw = stem
+        title = title_raw.replace("-", " ").title()
+        try_upload(video_path, "dev", title, "en")
 
-            try:
-                result = upload_video(youtube, video_path, topic, date_display, lang)
-                if result == "quota_exceeded":
-                    quota_deferred += 1
-                    quota_hit = True
-                else:
-                    uploaded += 1
-                    # Delay between uploads to stay under rate limits
-                    if args.delay > 0:
-                        print(f"  ⏱️ Waiting {args.delay}s before next upload...")
-                        time.sleep(args.delay)
-            except Exception as exc:
-                print(f"  ❌ Failed to upload {video_path.name}: {exc}")
-                failed += 1
+    # --- Upload daily briefs ---
+    if has_briefs:
+        topics = (
+            [args.topic]
+            if args.topic
+            else ["dotnet", "ai", "cloud", "dev", "security", "gamedev"]
+        )
+        date_display = datetime.strptime(args.date, "%Y-%m-%d").strftime("%B %d, %Y")
 
-    print(f"\n📊 Results: �� {uploaded} uploaded | ⏭️ {skipped} skipped | "
+        for topic in topics:
+            for lang, suffix in [("en", "-brief.mp4"), ("he", "-he-brief.mp4")]:
+                if args.language not in (lang, "both"):
+                    continue
+                video_path = output_dir / f"{topic}{suffix}"
+                if not video_path.exists():
+                    skipped += 1
+                    continue
+                if video_path.name in tracker:
+                    print(f"  ⏭️ Already uploaded: {video_path.name}")
+                    skipped += 1
+                    continue
+                try_upload(video_path, topic, date_display, lang)
+
+    print(f"\n📊 Results: ✅ {uploaded} uploaded | ⏭️ {skipped} skipped | "
           f"⏳ {quota_deferred} deferred | ❌ {failed} failed")
 
     if quota_deferred > 0:

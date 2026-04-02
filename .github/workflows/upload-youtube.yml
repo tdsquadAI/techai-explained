@@ -1,0 +1,155 @@
+name: Upload Videos to YouTube
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to upload (YYYY-MM-DD, default: today)'
+        required: false
+      topic:
+        description: 'Specific topic (leave empty for all)'
+        required: false
+      language:
+        description: 'Language: en, he, or both'
+        required: false
+        default: 'both'
+      max_uploads:
+        description: 'Max videos to upload this run (default: 1 for quota safety)'
+        required: false
+        default: '1'
+  schedule:
+    # Once daily at 07:00 UTC (after quota resets ~midnight PT / 07:00 UTC)
+    - cron: '0 7 * * *'
+  workflow_run:
+    workflows: ["Daily Tech Briefs"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: write  # needed to commit upload-tracker.json
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
+
+      - name: Set upload date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Determine language for scheduled runs
+        id: lang
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "language=both" >> $GITHUB_OUTPUT
+            echo "📌 Scheduled run: uploading next queued video"
+          else
+            echo "language=${{ inputs.language || 'both' }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check YouTube credentials
+        id: check_creds
+        run: |
+          if [ -z "$YOUTUBE_REFRESH_TOKEN" ]; then
+            echo "::warning::YOUTUBE_REFRESH_TOKEN not set. YouTube upload skipped. See issue #67."
+            echo "skip_upload=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
+      - name: Download video artifacts (workflow_run trigger)
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: pipeline/daily-briefs/output/
+        continue-on-error: true
+
+      - name: Download video artifacts (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/download-artifact@v4
+        with:
+          name: daily-briefs-${{ inputs.date || steps.date.outputs.date }}
+          path: pipeline/daily-briefs/output/${{ inputs.date || steps.date.outputs.date }}/
+        continue-on-error: true
+
+      - name: List available videos
+        run: |
+          echo "=== Downloaded daily brief artifacts ==="
+          find pipeline/daily-briefs/output/ -name "*.mp4" 2>/dev/null | head -30 || echo "(none)"
+          echo ""
+          echo "=== Pre-produced series videos ==="
+          find pipeline/output/ -name "*.mp4" 2>/dev/null | head -30 || echo "(none)"
+          echo ""
+          echo "=== Upload tracker ==="
+          cat pipeline/upload-tracker.json 2>/dev/null || echo "(no tracker yet)"
+
+      - name: Upload to YouTube
+        if: steps.check_creds.outputs.skip_upload != 'true'
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YT_PLAYLIST_DOTNET: ${{ secrets.YT_PLAYLIST_DOTNET }}
+          YT_PLAYLIST_AI: ${{ secrets.YT_PLAYLIST_AI }}
+          YT_PLAYLIST_CLOUD: ${{ secrets.YT_PLAYLIST_CLOUD }}
+          YT_PLAYLIST_DEV: ${{ secrets.YT_PLAYLIST_DEV }}
+          YT_PLAYLIST_SECURITY: ${{ secrets.YT_PLAYLIST_SECURITY }}
+          YT_PLAYLIST_GAMEDEV: ${{ secrets.YT_PLAYLIST_GAMEDEV }}
+        run: |
+          DATE="${{ inputs.date || steps.date.outputs.date }}"
+          TOPIC_ARG=""
+          if [ -n "${{ inputs.topic }}" ]; then
+            TOPIC_ARG="--topic ${{ inputs.topic }}"
+          fi
+          MAX_UPLOADS="${{ inputs.max_uploads || '1' }}"
+
+          python pipeline/daily-briefs/upload_to_youtube.py \
+            --date "$DATE" \
+            --language "${{ steps.lang.outputs.language }}" \
+            --search-dir pipeline/daily-briefs/output/ \
+            --series-dir pipeline/output/ \
+            --max-uploads "$MAX_UPLOADS" \
+            --delay 60 \
+            $TOPIC_ARG
+
+      - name: Commit upload tracker
+        if: always()
+        run: |
+          if [ -f pipeline/upload-tracker.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pipeline/upload-tracker.json
+            git diff --cached --quiet || git commit -m "chore: update upload tracker [skip ci]"
+            git push || echo "::warning::Could not push tracker update"
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          if [ "${{ steps.check_creds.outputs.skip_upload }}" = "true" ]; then
+            echo "## ⚠️ YouTube Upload Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "Credentials not configured. Follow [issue #67](https://github.com/${{ github.repository }}/issues/67) to set up OAuth secrets." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ job.status }}" = "success" ]; then
+            echo "## ✅ YouTube Upload Completed" >> $GITHUB_STEP_SUMMARY
+            echo "Date: ${{ inputs.date || steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> Drip-feed mode: max ${{ inputs.max_uploads || '1' }} upload/run to stay under YouTube quota." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ⚠️ YouTube Upload Deferred" >> $GITHUB_STEP_SUMMARY
+            echo "Quota may have been hit. Videos will retry on the next scheduled run." >> $GITHUB_STEP_SUMMARY
+          fi

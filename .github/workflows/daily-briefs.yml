@@ -68,30 +68,19 @@ jobs:
             python fetch_news.py "${topic}-he" $DATE --config topics_he.json || true
           done
 
+      - name: Set date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: daily-briefs-${{ github.run_number }}
+          name: daily-briefs-${{ steps.date.outputs.date }}
           path: pipeline/daily-briefs/output/
           retention-days: 30
-
-      - name: Upload to YouTube
-        if: env.YOUTUBE_REFRESH_TOKEN != ''
-        env:
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YT_PLAYLIST_DOTNET: ${{ secrets.YT_PLAYLIST_DOTNET }}
-          YT_PLAYLIST_AI: ${{ secrets.YT_PLAYLIST_AI }}
-          YT_PLAYLIST_CLOUD: ${{ secrets.YT_PLAYLIST_CLOUD }}
-          YT_PLAYLIST_DEV: ${{ secrets.YT_PLAYLIST_DEV }}
-          YT_PLAYLIST_SECURITY: ${{ secrets.YT_PLAYLIST_SECURITY }}
-          YT_PLAYLIST_GAMEDEV: ${{ secrets.YT_PLAYLIST_GAMEDEV }}
-        run: |
-          pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
-          DATE=$(date +%Y-%m-%d)
-          cd pipeline/daily-briefs
-          python upload_to_youtube.py --date "$DATE" --delay 30
+          overwrite: true
+      # YouTube upload is handled by the separate upload-youtube.yml workflow
+      # which triggers automatically via workflow_run when this workflow completes.
 
   weekly-summary:
     runs-on: ubuntu-latest
