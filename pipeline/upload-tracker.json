@@ -2,5 +2,29 @@
   "01-ai-agents-explained.mp4": {
     "video_id": "BIhf0Ji3iy4",
     "uploaded_at": "2026-03-21T00:00:00"
+  },
+  "01-what-is-ai-agent.mp4": {
+    "video_id": "ohqGAA5_7pY",
+    "uploaded_at": "2026-04-03T08:40:28.281189"
+  },
+  "02-ai-team-works-while-i-sleep.mp4": {
+    "video_id": "WS0M1o1-3es",
+    "uploaded_at": "2026-04-03T08:41:29.556362"
+  },
+  "02-rag-explained.mp4": {
+    "video_id": "iLkGbL9IaSQ",
+    "uploaded_at": "2026-04-03T08:42:31.895706"
+  },
+  "03-docker-vs-podman.mp4": {
+    "video_id": "qx0Fn_Q7KQI",
+    "uploaded_at": "2026-04-03T08:43:34.430334"
+  },
+  "03-mcp-servers-explained.mp4": {
+    "video_id": "dxeDVtBQFtQ",
+    "uploaded_at": "2026-04-03T08:44:36.085430"
+  },
+  "04-github-copilot-cli-secret-weapon.mp4": {
+    "video_id": "_DDfpn04lVU",
+    "uploaded_at": "2026-04-03T08:45:37.724373"
   }
 }
