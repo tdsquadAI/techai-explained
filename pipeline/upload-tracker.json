@@ -26,5 +26,21 @@
   "04-github-copilot-cli-secret-weapon.mp4": {
     "video_id": "_DDfpn04lVU",
     "uploaded_at": "2026-04-03T08:45:37.724373"
+  },
+  "04-why-kubernetes-won.mp4": {
+    "video_id": "1sU-5xkWy0s",
+    "uploaded_at": "2026-04-03T10:01:11.942376"
+  },
+  "05-how-ai-code-review-works.mp4": {
+    "video_id": "ACZ4sskieU8",
+    "uploaded_at": "2026-04-03T10:02:13.653338"
+  },
+  "05-microservices-are-dead.mp4": {
+    "video_id": "qAQmhhJfu_E",
+    "uploaded_at": "2026-04-03T10:03:15.346824"
+  },
+  "06-ai-code-review.mp4": {
+    "video_id": "FPwU-7nE1fM",
+    "uploaded_at": "2026-04-03T10:04:17.015809"
   }
 }
