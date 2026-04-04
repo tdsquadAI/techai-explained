@@ -1,7 +1,7 @@
 # Creates a Windows Scheduled Task to run daily brief generation
 $action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"C:\Users\tamirdresher\source\repos\techai-explained\pipeline\daily-briefs\scheduler.ps1`" -Now"
+    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$env:USERPROFILE\source\repos\techai-explained\pipeline\daily-briefs\scheduler.ps1`" -Now"
 
 $trigger = New-ScheduledTaskTrigger -Daily -At "06:00AM"
 

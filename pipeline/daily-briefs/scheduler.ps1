@@ -6,7 +6,7 @@ param(
     [string]$RunTime = "06:00"  # Generate briefs at 6 AM
 )
 
-$repoRoot = "C:\Users\tamirdresher\source\repos\techai-explained"
+$repoRoot = "$env:USERPROFILE\source\repos\techai-explained"
 $pipelineDir = "$repoRoot\pipeline\daily-briefs"
 
 # Topics to generate daily
@@ -23,7 +23,7 @@ function New-FailureIssue {
     )
 
     $searchTitle = "TechAI Failure $Topic $Date"
-    $existing = gh issue list --repo tamirdresher/techai-explained --search $searchTitle 2>$null
+    $existing = gh issue list --repo tdsquadAI/techai-explained --search $searchTitle 2>$null
 
     if ($existing) {
         Write-Host "  [Skip] GitHub issue already exists for $Topic ($Language) on $Date" -ForegroundColor DarkGray
@@ -34,7 +34,7 @@ function New-FailureIssue {
     $body = "## Daily Brief Generation Failed`n`n- **Topic:** $Topic`n- **Language:** $Language`n- **Date:** $Date`n- **Problem:** $Problem`n`nCheck logs in: pipeline/daily-briefs/output/$Date/`n`n**Auto-created by scheduler.**"
 
     Write-Host "  [Issue] Creating GitHub issue: $title" -ForegroundColor Red
-    gh issue create --repo tamirdresher/techai-explained `
+    gh issue create --repo tdsquadAI/techai-explained `
         --title $title `
         --body $body `
         --label "bug"

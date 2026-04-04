@@ -11,7 +11,7 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$manifestRepo = "C:\Users\tamirdresher\source\repos\techai-explained"
+$manifestRepo = "$env:USERPROFILE\source\repos\techai-explained"
 $manifestPath = "$manifestRepo\pipeline\machine-manifest.json"
 $logFile = "$env:TEMP\bootstrap-$(Get-Date -Format 'yyyy-MM-dd').log"
 
@@ -24,12 +24,12 @@ Log "=== Bootstrap starting ==="
 
 # Step 1: Git pull all repos
 Log "Pulling latest from all repos..."
-$token = gh auth token --user tamirdresher 2>$null
+$token = gh auth token --user tdsquadAI 2>$null
 
 $repos = @(
-    "C:\Users\tamirdresher\source\repos\techai-explained",
-    "C:\Users\tamirdresher\source\repos\content-empire",
-    "C:\Users\tamirdresher\source\repos\jellybolt-games"
+    "$env:USERPROFILE\source\repos\techai-explained",
+    "$env:USERPROFILE\source\repos\content-empire",
+    "$env:USERPROFILE\source\repos\jellybolt-games"
 )
 
 foreach ($repo in $repos) {
@@ -91,7 +91,7 @@ if ($isNewMachine) {
     git add pipeline/machines/registry.json
     git commit -m "chore: register new machine $machineId" --quiet 2>$null
     if ($token) {
-        git push "https://tamirdresher:$token@github.com/tamirdresher/techai-explained.git" HEAD --quiet 2>$null
+        git push "https://tdsquadAI:$token@github.com/tdsquadAI/techai-explained.git" HEAD --quiet 2>$null
     }
     Pop-Location
     
@@ -106,7 +106,7 @@ New machine **$machineId** registered at $(Get-Date -Format 'yyyy-MM-dd HH:mm').
 - [ ] Python deps installed (feedparser, edge-tts, Pillow, moviepy)
 - [ ] TechAI-StartupCatchUp task registered
 - [ ] TechAI-DailyBriefs task registered
-- [ ] gh auth login for tamirdresher
+- [ ] gh auth login for tdsquadAI
 - [ ] First daily briefs generated
 - [ ] All 3 Ralphs launched
 
@@ -122,7 +122,7 @@ New machine **$machineId** registered at $(Get-Date -Format 'yyyy-MM-dd HH:mm').
             labels = @("automation")
         } | ConvertTo-Json
         
-        Invoke-RestMethod -Uri "https://api.github.com/repos/tamirdresher/techai-explained/issues" `
+        Invoke-RestMethod -Uri "https://api.github.com/repos/tdsquadAI/techai-explained/issues" `
             -Method POST -Headers $headers -Body $body -ContentType "application/json" -ErrorAction SilentlyContinue
         Log "  Created GitHub issue for machine setup"
     }
@@ -145,9 +145,9 @@ foreach ($check in $setupChecklist) {
     $passed = $false
     switch ($check.id) {
         "repos-cloned" { 
-            $passed = (Test-Path "C:\Users\tamirdresher\source\repos\techai-explained") -and 
-                      (Test-Path "C:\Users\tamirdresher\source\repos\content-empire") -and
-                      (Test-Path "C:\Users\tamirdresher\source\repos\jellybolt-games")
+            $passed = (Test-Path "$env:USERPROFILE\source\repos\techai-explained") -and 
+                      (Test-Path "$env:USERPROFILE\source\repos\content-empire") -and
+                      (Test-Path "$env:USERPROFILE\source\repos\jellybolt-games")
         }
         "bootstrap-installed" {
             $startupPath = [Environment]::GetFolderPath('Startup')
@@ -164,7 +164,7 @@ foreach ($check in $setupChecklist) {
             $passed = [bool](Get-ScheduledTask -TaskName "TechAI-DailyBriefs" -ErrorAction SilentlyContinue)
         }
         "git-auth" {
-            $passed = [bool](gh auth token --user tamirdresher 2>$null)
+            $passed = [bool](gh auth token --user tdsquadAI 2>$null)
         }
         "first-briefs" {
             $passed = (Get-ChildItem "$manifestRepo\pipeline\daily-briefs\output" -Directory -ErrorAction SilentlyContinue).Count -gt 0

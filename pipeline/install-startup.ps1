@@ -1,7 +1,7 @@
 # Register the startup catch-up script to run at logon
 # Run this once (elevated not required for user-level task)
 
-$scriptPath = "C:\Users\tamirdresher\source\repos\techai-explained\pipeline\startup-catchup.ps1"
+$scriptPath = "$env:USERPROFILE\source\repos\techai-explained\pipeline\startup-catchup.ps1"
 
 # --- Method 1: Windows Scheduled Task (AtLogOn) ---
 Write-Host "=== Installing TechAI Startup Catch-Up ===" -ForegroundColor Cyan

@@ -30,7 +30,7 @@ This is the TechAI Content Empire — an automated pipeline for generating daily
 This repo is forked into **github.com/techai-explained/techai-explained** — the brand's independent org.
 
 **Remotes:**
-- `origin` → tamirdresher/techai-explained (personal, legacy)
+- `origin` → tdsquadAI/techai-explained (org, primary)
 - `org` → techai-explained/techai-explained (org, primary going forward)
 
 **Push to BOTH remotes** when making changes:
@@ -49,7 +49,7 @@ This repo is forked into **github.com/techai-explained/techai-explained** — th
 
 **Pages URL:** techai-explained.github.io/techai-explained
 
-**⚠️ NEVER reference 'tamirdresher' or 'Tamir Dresher' in any public-facing content.**
+**⚠️ NEVER reference personal identities in any public-facing content. This brand is independent.**
 
 ## Credential Access (Cross-Machine)
 

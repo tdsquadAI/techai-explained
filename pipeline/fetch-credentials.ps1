@@ -24,7 +24,7 @@ foreach ($brand in $repos.Keys) {
             }
             
             # Create .env file in the local repo
-            $repoPath = "C:\Users\tamirdresher\source\repos\$brand"
+            $repoPath = "$env:USERPROFILE\source\repos\$brand"
             if (Test-Path $repoPath) {
                 $envContent = ($vars | ForEach-Object { "$($_.name)=$($_.value)" }) -join "`n"
                 Set-Content "$repoPath\.env" -Value $envContent -Encoding UTF8

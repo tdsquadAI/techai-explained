@@ -9,7 +9,7 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $Host.UI.RawUI.WindowTitle = "Ralph Watch - techai-explained"
 
-$repoOwner = "tamirdresher"
+$repoOwner = "tdsquadAI"
 $repoName = "techai-explained"
 $round = 0
 $consecutiveFailures = 0
@@ -23,7 +23,7 @@ Focus on the video production pipeline — scripts, voice, visuals, SEO, and pub
 If there are no actionable issues, report idle status.
 '@
 
-function ghp { gh auth switch --user tamirdresher 2>$null | Out-Null; gh @args }
+function ghp { gh auth switch --user tdsquadAI 2>$null | Out-Null; gh @args }
 
 while ($true) {
     $round++
