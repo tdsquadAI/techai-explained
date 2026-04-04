@@ -42,5 +42,17 @@
   "06-ai-code-review.mp4": {
     "video_id": "FPwU-7nE1fM",
     "uploaded_at": "2026-04-03T10:04:17.015809"
+  },
+  "07-distributed-tracing.mp4": {
+    "video_id": "pPf8LWxjCpQ",
+    "uploaded_at": "2026-04-04T09:05:02.182524"
+  },
+  "08-platform-engineer-tools.mp4": {
+    "video_id": "fiVKypL7TKY",
+    "uploaded_at": "2026-04-04T09:06:03.681274"
+  },
+  "09-dev-productivity-2026.mp4": {
+    "video_id": "lV9J2mIG5y8",
+    "uploaded_at": "2026-04-04T09:07:05.340790"
   }
 }
