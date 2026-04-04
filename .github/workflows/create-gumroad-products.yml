@@ -65,6 +65,6 @@ jobs:
             # Can't set org secrets here, but the product ID is logged above
             echo "## ✅ Gumroad Product Created" >> $GITHUB_STEP_SUMMARY
             echo "- **Product ID:** $GUMROAD_PRODUCT_ID" >> $GITHUB_STEP_SUMMARY
-            echo "- **URL:** https://gumroad.com/l/ai-powered-dev-course" >> $GITHUB_STEP_SUMMARY
+            echo "- **URL:** https://squadai.gumroad.com/l/ai-powered-dev-course" >> $GITHUB_STEP_SUMMARY
             echo "- **Status:** Draft (review at https://app.gumroad.com/products)" >> $GITHUB_STEP_SUMMARY
           fi

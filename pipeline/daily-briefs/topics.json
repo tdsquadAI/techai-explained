@@ -12,7 +12,7 @@
       "keywords": ["dotnet", "csharp", "aspnet", "blazor", "maui", "ef core", "nuget"],
       "schedule": "daily",
       "intro": "Welcome to .NET Daily — your daily dose of .NET news and updates.",
-      "outro": "That's your .NET Daily. Subscribe for tomorrow's update. Full courses at tdsquad.gumroad.com"
+      "outro": "That's your .NET Daily. Subscribe for tomorrow's update. Full courses at squadai.gumroad.com"
     },
     {
       "id": "ai",
@@ -26,7 +26,7 @@
       "keywords": ["ai", "llm", "gpt", "claude", "machine learning", "deep learning", "neural", "transformer", "rag", "agent"],
       "schedule": "daily",
       "intro": "Welcome to AI Daily — the latest in artificial intelligence and machine learning.",
-      "outro": "That's AI Daily. Hit subscribe for tomorrow's brief. Learn AI development at tdsquad.gumroad.com"
+      "outro": "That's AI Daily. Hit subscribe for tomorrow's brief. Learn AI development at squadai.gumroad.com"
     },
     {
       "id": "cloud",
@@ -40,7 +40,7 @@
       "keywords": ["kubernetes", "docker", "azure", "aws", "gcp", "terraform", "devops", "cloud native", "serverless"],
       "schedule": "daily",
       "intro": "Welcome to Cloud Daily — your daily cloud and DevOps update.",
-      "outro": "That's Cloud Daily. Subscribe for daily updates. K8s course at tdsquad.gumroad.com"
+      "outro": "That's Cloud Daily. Subscribe for daily updates. K8s course at squadai.gumroad.com"
     },
     {
       "id": "dev",

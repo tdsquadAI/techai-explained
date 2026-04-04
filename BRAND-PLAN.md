@@ -8,7 +8,7 @@ Deliver daily, actionable tech insights to developers and tech enthusiasts — i
 
 | Stream           | Platform         | Status           | Notes                              |
 |-----------------|------------------|------------------|------------------------------------|
-| Digital Products | Gumroad          | ✅ Active         | Store: tdsquad.gumroad.com         |
+| Digital Products | Gumroad          | ✅ Active         | Store: squadai.gumroad.com         |
 | Ad Revenue       | Google AdSense   | ⏳ Pending signup | Needs publisher ID                 |
 | Affiliates       | Multiple         | ⏳ Pending signup | DigitalOcean, AWS, Cloudflare, JetBrains |
 | Tips/Donations   | BuyMeACoffee     | ⏳ Pending setup  | buymeacoffee.com/jellyboltgames    |

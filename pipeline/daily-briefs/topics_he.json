@@ -14,7 +14,7 @@
       "language": "he",
       "voice": "he-IL-AvriNeural",
       "intro": "ברוכים הבאים לדוט-נט יומי — המנה היומית שלכם של חדשות דוט-נט.",
-      "outro": "זה הדוט-נט יומי שלכם. הירשמו לערוץ לעדכון של מחר. קורסים מלאים ב-tdsquad.gumroad.com"
+      "outro": "זה הדוט-נט יומי שלכם. הירשמו לערוץ לעדכון של מחר. קורסים מלאים ב-squadai.gumroad.com"
     },
     {
       "id": "ai-he",
@@ -30,7 +30,7 @@
       "language": "he",
       "voice": "he-IL-AvriNeural",
       "intro": "ברוכים הבאים ל-AI יומי — העדכונים האחרונים בבינה מלאכותית ולמידת מכונה.",
-      "outro": "זה ה-AI יומי. הירשמו לערוץ. למדו פיתוח AI ב-tdsquad.gumroad.com"
+      "outro": "זה ה-AI יומי. הירשמו לערוץ. למדו פיתוח AI ב-squadai.gumroad.com"
     },
     {
       "id": "cloud-he",
@@ -46,7 +46,7 @@
       "language": "he",
       "voice": "he-IL-AvriNeural",
       "intro": "ברוכים הבאים לענן יומי — העדכון היומי שלכם בענן ו-DevOps.",
-      "outro": "זה הענן יומי. הירשמו לעדכונים. קורס K8s ב-tdsquad.gumroad.com"
+      "outro": "זה הענן יומי. הירשמו לעדכונים. קורס K8s ב-squadai.gumroad.com"
     },
     {
       "id": "dev-he",

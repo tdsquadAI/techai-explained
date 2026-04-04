@@ -92,7 +92,7 @@ Located in `pipeline/daily-briefs/output/2026-03-20/`:
   - 30 daily tips, 4 Gumroad listings, marketing materials
 
 ## Monetization
-- **Gumroad:** tdsquad.gumroad.com
+- **Gumroad:** squadai.gumroad.com
   - AI Dev Course: $19.99 (ID: jnmqpd)
   - K8s Course: $14.99 (ID: nnefv)
   - Game Bundle: $4.99 (ID: qtmyl)
