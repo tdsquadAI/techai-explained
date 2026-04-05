@@ -54,5 +54,29 @@
   "09-dev-productivity-2026.mp4": {
     "video_id": "lV9J2mIG5y8",
     "uploaded_at": "2026-04-04T09:07:05.340790"
+  },
+  "dotnet-brief.mp4": {
+    "video_id": "lN_kAGsNj44",
+    "uploaded_at": "2026-04-05T08:09:24.764107"
+  },
+  "ai-brief.mp4": {
+    "video_id": "bb4XqW_4X8s",
+    "uploaded_at": "2026-04-05T08:10:26.075676"
+  },
+  "cloud-brief.mp4": {
+    "video_id": "6dJOkofQ9UU",
+    "uploaded_at": "2026-04-05T08:11:27.456183"
+  },
+  "dev-brief.mp4": {
+    "video_id": "PBt_EC1XYgY",
+    "uploaded_at": "2026-04-05T08:12:28.985817"
+  },
+  "security-brief.mp4": {
+    "video_id": "LmaHL5oUhzo",
+    "uploaded_at": "2026-04-05T08:13:30.322811"
+  },
+  "gamedev-brief.mp4": {
+    "video_id": "DMUpskFTotA",
+    "uploaded_at": "2026-04-05T08:14:31.580491"
   }
 }
