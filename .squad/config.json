@@ -7,6 +7,14 @@
     "agentCmd": "agency copilot --yolo --autopilot --mcp mail --agent squad",
     "verbose": false,
     "self-pull": true,
-    "cleanup": true
+    "board": true,
+    "two-pass": true,
+    "decision-hygiene": true,
+    "cleanup": true,
+    "wave-dispatch": true,
+    "fleet-dispatch": true,
+    "retro": true,
+    "monitor-teams": true,
+    "monitor-email": true
   }
 }
