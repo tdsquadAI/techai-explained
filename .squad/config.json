@@ -4,9 +4,9 @@
     "interval": 15,
     "execute": true,
     "timeout": 30,
+    "agentCmd": "agency copilot --yolo --autopilot --mcp mail --agent squad",
     "verbose": false,
     "self-pull": true,
-    "decision-hygiene": false,
     "cleanup": true
   }
 }
