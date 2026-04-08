@@ -1,8 +1,8 @@
 # TechAI Explained — Squad Roster
 
-## Universe: Film Noir
+## Members
 
-| Agent | Alias | Role | Status |
+| Name | Alias | Role | Status |
 |-------|-------|------|--------|
 | **Sam Spade** | @sam | Lead / Content Strategy | ✅ Active |
 | **Marlowe** | @marlowe | Script Writer | ✅ Active |
