@@ -49,7 +49,7 @@ TRACKER_PATH = Path(__file__).parent.parent / "upload-tracker.json"
 
 
 def load_tracker() -> dict:
-    """Load the upload tracker. Returns dict mapping filename -> {video_id, uploaded_at}."""
+    """Load filename (series) or date/filename (brief) upload records."""
     if TRACKER_PATH.exists():
         try:
             return json.loads(TRACKER_PATH.read_text(encoding="utf-8"))
@@ -62,6 +62,14 @@ def save_tracker(tracker: dict):
     """Persist the upload tracker."""
     TRACKER_PATH.parent.mkdir(parents=True, exist_ok=True)
     TRACKER_PATH.write_text(json.dumps(tracker, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def brief_already_uploaded(tracker: dict, filename: str, date_str: str) -> bool:
+    if f"{date_str}/{filename}" in tracker:
+        return True
+    # Legacy records have no content date; retain same-day deduplication only.
+    legacy = tracker.get(filename)
+    return legacy is not None and legacy["uploaded_at"].startswith(f"{date_str}T")
 
 
 def is_quota_error(exc: HttpError) -> bool:
@@ -288,7 +296,7 @@ def main():
     quota_deferred = 0
     quota_hit = False
 
-    def try_upload(video_path, topic, title_date, lang="en"):
+    def try_upload(video_path, topic, title_date, lang="en", tracker_key=None):
         """Attempt upload, returns True if uploaded, updates counters via nonlocal."""
         nonlocal uploaded, failed, quota_deferred, quota_hit
         if uploaded >= args.max_uploads:
@@ -307,7 +315,7 @@ def main():
                 return False
             else:
                 uploaded += 1
-                tracker[video_path.name] = {
+                tracker[tracker_key or video_path.name] = {
                     "video_id": result,
                     "uploaded_at": datetime.now().isoformat(),
                 }
@@ -354,11 +362,14 @@ def main():
                 if not video_path.exists():
                     skipped += 1
                     continue
-                if video_path.name in tracker:
+                if brief_already_uploaded(tracker, video_path.name, args.date):
                     print(f"  ⏭️ Already uploaded: {video_path.name}")
                     skipped += 1
                     continue
-                try_upload(video_path, topic, date_display, lang)
+                try_upload(
+                    video_path, topic, date_display, lang,
+                    tracker_key=f"{args.date}/{video_path.name}",
+                )
 
     print(f"\n📊 Results: ✅ {uploaded} uploaded | ⏭️ {skipped} skipped | "
           f"⏳ {quota_deferred} deferred | ❌ {failed} failed")

@@ -1,0 +1,31 @@
+name: YouTube Upload Tracking Tests
+
+on:
+  pull_request:
+    paths:
+      - 'pipeline/daily-briefs/upload_to_youtube.py'
+      - 'pipeline/daily-briefs/test_upload_to_youtube.py'
+      - '.github/workflows/upload-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'pipeline/daily-briefs/upload_to_youtube.py'
+      - 'pipeline/daily-briefs/test_upload_to_youtube.py'
+      - '.github/workflows/upload-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install upload dependencies
+        run: pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
+      - name: Test upload tracking without contacting YouTube
+        run: python -m unittest discover -s pipeline/daily-briefs -p test_upload_to_youtube.py

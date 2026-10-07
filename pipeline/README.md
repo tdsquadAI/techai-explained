@@ -132,6 +132,29 @@ python pipeline/generate_yearly_recap.py pipeline/templates/sample-yearly.json -
 | 08 | platform-engineer-tools | Essential platform engineering tools |
 | 09 | dev-productivity-2026 | Modern developer productivity stack |
 
+## YouTube Upload Tracking
+
+`pipeline/upload-tracker.json` tracks series videos by filename and daily
+briefs by `YYYY-MM-DD/filename`. English and Hebrew filenames are distinct.
+Rerunning a date skips its uploaded briefs without blocking later dates.
+Legacy filename-only brief records suppress uploads only on their recorded
+upload day, because they do not contain a content date. When retrying an old
+brief uploaded on a different day, verify its channel entry and add the
+date-qualified tracker record before retrying to avoid duplicates.
+
+מעקב העלאות: סרטוני סדרה מזוהים לפי שם הקובץ, ותקצירים יומיים לפי
+`YYYY-MM-DD/filename`. קבצים באנגלית ובעברית נפרדים. הרצה חוזרת של אותו
+תאריך מדלגת על תקצירים שכבר הועלו, בלי לחסום תאריכים חדשים.
+רשומות ישנות ללא תאריך תוכן מונעות העלאה חוזרת רק ביום ההעלאה המתועד.
+לפני ניסיון חוזר של תקציר ישן שהועלה ביום אחר, יש לבדוק את הסרטון בערוץ
+ולהוסיף רשומת מעקב עם תאריך התוכן כדי למנוע כפילות.
+
+Run the upload-tracking regression tests with:
+
+```powershell
+python -m unittest discover -s pipeline\daily-briefs -p test_upload_to_youtube.py
+```
+
 ## Customization
 
 Edit `pipeline/config.py` to change:
