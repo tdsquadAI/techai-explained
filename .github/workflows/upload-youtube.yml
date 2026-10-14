@@ -77,22 +77,32 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
 
-      - name: Download video artifacts (workflow_run trigger)
-        if: github.event_name == 'workflow_run'
+      - name: Resolve daily brief artifact
+        id: brief
+        uses: actions/github-script@v8
+        env:
+          BRIEF_DATE: ${{ inputs.date || steps.date.outputs.date }}
+        with:
+          script: |
+            const resolve = require('./.github/scripts/resolve-brief-artifact.cjs');
+            await resolve({ github, context, core, date: process.env.BRIEF_DATE });
+
+      - name: Download daily brief artifact
         uses: actions/download-artifact@v8
         with:
           github-token: ${{ github.token }}
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ steps.brief.outputs.run_id }}
+          name: ${{ steps.brief.outputs.artifact_name }}
           path: pipeline/daily-briefs/output/
-        continue-on-error: true
 
-      - name: Download video artifacts (manual trigger)
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/download-artifact@v8
-        with:
-          name: daily-briefs-${{ inputs.date || steps.date.outputs.date }}
-          path: pipeline/daily-briefs/output/${{ inputs.date || steps.date.outputs.date }}/
-        continue-on-error: true
+      - name: Verify daily brief videos
+        env:
+          BRIEF_DATE: ${{ steps.brief.outputs.date }}
+        run: |
+          if ! find "pipeline/daily-briefs/output/$BRIEF_DATE" -type f -name '*.mp4' -print -quit | grep -q .; then
+            echo "::error::The downloaded daily brief artifact contains no videos for $BRIEF_DATE."
+            exit 1
+          fi
 
       - name: List available videos
         run: |
@@ -118,7 +128,7 @@ jobs:
           YT_PLAYLIST_SECURITY: ${{ secrets.YT_PLAYLIST_SECURITY }}
           YT_PLAYLIST_GAMEDEV: ${{ secrets.YT_PLAYLIST_GAMEDEV }}
         run: |
-          DATE="${{ inputs.date || steps.date.outputs.date }}"
+          DATE="${{ steps.brief.outputs.date }}"
           TOPIC_ARG=""
           if [ -n "${{ inputs.topic }}" ]; then
             TOPIC_ARG="--topic ${{ inputs.topic }}"
@@ -154,10 +164,10 @@ jobs:
             echo "See [techai-explained/techai-explained#126](https://github.com/techai-explained/techai-explained/issues/126)." >> $GITHUB_STEP_SUMMARY
           elif [ "${{ job.status }}" = "success" ]; then
             echo "## ✅ YouTube Upload Completed" >> $GITHUB_STEP_SUMMARY
-            echo "Date: ${{ inputs.date || steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+            echo "Date: ${{ steps.brief.outputs.date }}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> Drip-feed mode: max ${{ inputs.max_uploads || '6' }} upload/run to stay under YouTube quota." >> $GITHUB_STEP_SUMMARY
           else
-            echo "## ⚠️ YouTube Upload Deferred" >> $GITHUB_STEP_SUMMARY
-            echo "Quota may have been hit. Videos will retry on the next scheduled run." >> $GITHUB_STEP_SUMMARY
+            echo "## ⚠️ YouTube Upload Failed" >> $GITHUB_STEP_SUMMARY
+            echo "Inspect the failed step for credential, artifact, or upload errors before retrying." >> $GITHUB_STEP_SUMMARY
           fi

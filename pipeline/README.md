@@ -134,6 +134,20 @@ python pipeline/generate_yearly_recap.py pipeline/templates/sample-yearly.json -
 
 ## YouTube Upload Tracking
 
+All upload triggers download a named daily-brief artifact from an explicit,
+successful `Daily Tech Briefs` run on `main` in the same repository. Scheduled
+and manual runs resolve the requested UTC date (today by default); automatic
+`workflow_run` uploads preserve the source artifact's content date, including
+across midnight. Missing, expired, or video-free artifacts fail the job instead
+of reporting an empty upload as successful. Artifacts already contain their
+date directory, so downloads extract into the output root without nesting it twice.
+
+כל הפעלות ההעלאה מורידות תוצר בשם מוגדר מריצת `Daily Tech Briefs` מוצלחת
+בענף `main` באותו מאגר. הפעלות מתוזמנות וידניות מאתרות את תאריך ה-UTC
+המבוקש (היום כברירת מחדל); הפעלה אוטומטית שומרת על תאריך התוכן המקורי גם
+בחציית חצות. תוצר חסר, שפג תוקפו או שאינו מכיל סרטונים מכשיל את המשימה.
+ההורדה שומרת על תיקיית התאריך המקורית ללא יצירת תיקייה כפולה.
+
 `pipeline/upload-tracker.json` tracks series videos by filename and daily
 briefs by `YYYY-MM-DD/filename`. English and Hebrew filenames are distinct.
 Rerunning a date skips its uploaded briefs without blocking later dates.
@@ -153,6 +167,7 @@ Run the upload-tracking regression tests with:
 
 ```powershell
 python -m unittest discover -s pipeline\daily-briefs -p test_upload_to_youtube.py
+node --test .github\scripts\resolve-brief-artifact.test.cjs
 ```
 
 ## Customization
