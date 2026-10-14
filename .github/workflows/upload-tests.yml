@@ -6,12 +6,16 @@ on:
       - 'pipeline/daily-briefs/upload_to_youtube.py'
       - 'pipeline/daily-briefs/test_upload_to_youtube.py'
       - '.github/workflows/upload-tests.yml'
+      - '.github/workflows/upload-youtube.yml'
+      - '.github/scripts/resolve-brief-artifact*.cjs'
   push:
     branches: [main]
     paths:
       - 'pipeline/daily-briefs/upload_to_youtube.py'
       - 'pipeline/daily-briefs/test_upload_to_youtube.py'
       - '.github/workflows/upload-tests.yml'
+      - '.github/workflows/upload-youtube.yml'
+      - '.github/scripts/resolve-brief-artifact*.cjs'
   workflow_dispatch:
 
 permissions:
@@ -29,3 +33,5 @@ jobs:
         run: pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
       - name: Test upload tracking without contacting YouTube
         run: python -m unittest discover -s pipeline/daily-briefs -p test_upload_to_youtube.py
+      - name: Test daily brief artifact resolution without uploading
+        run: node --test .github/scripts/resolve-brief-artifact.test.cjs
