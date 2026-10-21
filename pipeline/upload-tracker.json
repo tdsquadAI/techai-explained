@@ -282,5 +282,21 @@
   "2026-10-20/dev-brief.mp4": {
     "video_id": "YSFKCh9n9jM",
     "uploaded_at": "2026-10-20T10:58:50.720417"
+  },
+  "2026-10-21/dotnet-brief.mp4": {
+    "video_id": "3CBPhZ0Bn-g",
+    "uploaded_at": "2026-10-21T11:07:57.381922"
+  },
+  "2026-10-21/ai-brief.mp4": {
+    "video_id": "pxbub9vcT20",
+    "uploaded_at": "2026-10-21T11:09:00.119862"
+  },
+  "2026-10-21/cloud-brief.mp4": {
+    "video_id": "pCSGXndaLpg",
+    "uploaded_at": "2026-10-21T11:10:02.149684"
+  },
+  "2026-10-21/dev-brief.mp4": {
+    "video_id": "ziyFUjRkLxc",
+    "uploaded_at": "2026-10-21T11:11:04.326209"
   }
 }
