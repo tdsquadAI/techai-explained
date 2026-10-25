@@ -346,5 +346,29 @@
   "2026-10-24/dev-brief.mp4": {
     "video_id": "MXRQbHq6Z3Y",
     "uploaded_at": "2026-10-24T10:18:27.977148"
+  },
+  "2026-10-25/dotnet-brief.mp4": {
+    "video_id": "r1zbVXj12Jg",
+    "uploaded_at": "2026-10-25T10:41:24.666006"
+  },
+  "2026-10-25/ai-brief.mp4": {
+    "video_id": "OcDODvLMYVU",
+    "uploaded_at": "2026-10-25T10:42:25.750718"
+  },
+  "2026-10-25/cloud-brief.mp4": {
+    "video_id": "kWealhNhDPg",
+    "uploaded_at": "2026-10-25T10:43:27.589322"
+  },
+  "2026-10-25/dev-brief.mp4": {
+    "video_id": "WRhqrHud2KI",
+    "uploaded_at": "2026-10-25T10:44:28.978744"
+  },
+  "2026-10-25/security-brief.mp4": {
+    "video_id": "b39sYuwM-eE",
+    "uploaded_at": "2026-10-25T10:45:30.741672"
+  },
+  "2026-10-25/gamedev-brief.mp4": {
+    "video_id": "vctZWUiSCI4",
+    "uploaded_at": "2026-10-25T10:46:31.965112"
   }
 }
