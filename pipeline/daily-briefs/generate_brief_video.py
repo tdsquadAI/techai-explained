@@ -221,8 +221,22 @@ async def generate_tts(text, output_path, voice=None):
     """Generate TTS audio using edge-tts."""
     if voice is None:
         voice = TTS_VOICE
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save(output_path)
+    for attempt in range(3):
+        communicate = edge_tts.Communicate(text, voice)
+        try:
+            await communicate.save(output_path)
+            return
+        except edge_tts.exceptions.NoAudioReceived:
+            Path(output_path).unlink(missing_ok=True)
+            if attempt == 2:
+                raise
+            delay = 2 ** (attempt + 1)
+            print(
+                f"No TTS audio received for {output_path}; "
+                f"retrying in {delay}s (attempt {attempt + 2}/3).",
+                file=sys.stderr,
+            )
+            await asyncio.sleep(delay)
 
 
 def build_tts_script(brief):

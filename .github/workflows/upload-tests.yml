@@ -5,6 +5,8 @@ on:
     paths:
       - 'pipeline/daily-briefs/upload_to_youtube.py'
       - 'pipeline/daily-briefs/test_upload_to_youtube.py'
+      - 'pipeline/daily-briefs/generate_brief_video.py'
+      - 'pipeline/daily-briefs/test_generate_brief_video.py'
       - '.github/workflows/upload-tests.yml'
       - '.github/workflows/upload-youtube.yml'
       - '.github/scripts/resolve-brief-artifact*.cjs'
@@ -13,6 +15,8 @@ on:
     paths:
       - 'pipeline/daily-briefs/upload_to_youtube.py'
       - 'pipeline/daily-briefs/test_upload_to_youtube.py'
+      - 'pipeline/daily-briefs/generate_brief_video.py'
+      - 'pipeline/daily-briefs/test_generate_brief_video.py'
       - '.github/workflows/upload-tests.yml'
       - '.github/workflows/upload-youtube.yml'
       - '.github/scripts/resolve-brief-artifact*.cjs'
@@ -22,6 +26,18 @@ permissions:
   contents: read
 
 jobs:
+  tts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install narration dependencies
+        run: pip install edge-tts Pillow
+      - name: Test narration retries without contacting TTS
+        run: python -m unittest discover -s pipeline/daily-briefs -p test_generate_brief_video.py
+
   test:
     runs-on: ubuntu-latest
     steps:
