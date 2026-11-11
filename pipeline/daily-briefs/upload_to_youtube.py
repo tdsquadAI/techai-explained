@@ -10,6 +10,7 @@ import sys
 import time
 import json
 import argparse
+import tempfile
 from pathlib import Path
 from datetime import datetime
 
@@ -50,18 +51,35 @@ TRACKER_PATH = Path(__file__).parent.parent / "upload-tracker.json"
 
 def load_tracker() -> dict:
     """Load filename (series) or date/filename (brief) upload records."""
-    if TRACKER_PATH.exists():
-        try:
-            return json.loads(TRACKER_PATH.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            pass
-    return {}
+    try:
+        contents = TRACKER_PATH.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return {}
+
+    try:
+        tracker = json.loads(contents)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid upload tracker: {TRACKER_PATH}") from exc
+    if not isinstance(tracker, dict):
+        raise ValueError(f"Upload tracker must contain a JSON object: {TRACKER_PATH}")
+    return tracker
 
 
 def save_tracker(tracker: dict):
     """Persist the upload tracker."""
     TRACKER_PATH.parent.mkdir(parents=True, exist_ok=True)
-    TRACKER_PATH.write_text(json.dumps(tracker, indent=2, ensure_ascii=False), encoding="utf-8")
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=TRACKER_PATH.parent,
+            prefix=f"{TRACKER_PATH.name}.", suffix=".tmp", delete=False,
+        ) as temp_file:
+            temp_path = Path(temp_file.name)
+            json.dump(tracker, temp_file, indent=2, ensure_ascii=False)
+        temp_path.replace(TRACKER_PATH)
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
 
 
 def brief_already_uploaded(tracker: dict, filename: str, date_str: str) -> bool:
@@ -90,16 +108,16 @@ def is_quota_error(exc: HttpError) -> bool:
 
 
 def check_credentials():
-    """Verify required YouTube OAuth env vars are set. Exit(0) with clear message if not."""
+    """Verify required YouTube OAuth env vars are set."""
     required = ["YOUTUBE_REFRESH_TOKEN", "YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET"]
-    missing = [v for v in required if not os.environ.get(v)]
+    missing = [v for v in required if not os.environ.get(v, "").strip()]
     if missing:
         print(
-            "⚠️ YouTube credentials not configured. "
-            "Set YOUTUBE_REFRESH_TOKEN, YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET secrets. "
-            "See issue #67."
+            f"Missing required YouTube credentials: {', '.join(missing)}. "
+            "See https://github.com/techai-explained/techai-explained/issues/126.",
+            file=sys.stderr,
         )
-        sys.exit(0)
+        sys.exit(1)
 
 
 def get_youtube_client():
@@ -210,8 +228,6 @@ def upload_video(youtube, video_path: Path, topic: str, date_str: str, language:
 
 
 def main():
-    check_credentials()
-
     parser = argparse.ArgumentParser(description="Upload TechAI daily briefs to YouTube")
     parser.add_argument(
         "--date",
@@ -249,6 +265,7 @@ def main():
     )
     args = parser.parse_args()
 
+    check_credentials()
     tracker = load_tracker()
 
     # --- Phase 1: Collect series videos (pre-produced, uploaded first) ---
@@ -309,25 +326,31 @@ def main():
             return False
         try:
             result = upload_video(youtube, video_path, topic, title_date, lang)
-            if result == "quota_exceeded":
-                quota_deferred += 1
-                quota_hit = True
-                return False
-            else:
-                uploaded += 1
-                tracker[tracker_key or video_path.name] = {
-                    "video_id": result,
-                    "uploaded_at": datetime.now().isoformat(),
-                }
-                save_tracker(tracker)
-                if args.delay > 0 and uploaded < args.max_uploads:
-                    print(f"  ⏱️ Waiting {args.delay}s before next upload...")
-                    time.sleep(args.delay)
-                return True
         except Exception as exc:
-            print(f"  ❌ Failed to upload {video_path.name}: {exc}")
+            print(f"  ❌ Failed to upload {video_path.name}: {exc}", file=sys.stderr)
             failed += 1
             return False
+
+        if result == "quota_exceeded":
+            quota_deferred += 1
+            quota_hit = True
+            return False
+        tracker[tracker_key or video_path.name] = {
+            "video_id": result,
+            "uploaded_at": datetime.now().isoformat(),
+        }
+        try:
+            save_tracker(tracker)
+        except OSError as exc:
+            raise RuntimeError(
+                f"Uploaded {video_path.name} as {result}, but could not save the "
+                "upload tracker. Restore the record before retrying."
+            ) from exc
+        uploaded += 1
+        if args.delay > 0 and uploaded < args.max_uploads:
+            print(f"  ⏱️ Waiting {args.delay}s before next upload...")
+            time.sleep(args.delay)
+        return True
 
     # --- Upload series videos first (higher priority, evergreen content) ---
     for video_path in series_queue:
@@ -377,9 +400,7 @@ def main():
     if quota_deferred > 0:
         print(f"ℹ️  {quota_deferred} video(s) deferred due to quota — will upload on next scheduled run.")
 
-    # Exit 0 even if quota was hit — this is expected for new channels.
-    # Only hard-fail if there were non-quota errors AND zero successful uploads.
-    if failed > 0 and uploaded == 0 and quota_deferred == 0:
+    if failed > 0:
         sys.exit(1)
 
 
